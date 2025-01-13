@@ -89,7 +89,7 @@ subprojects {
 
     extensions.configure<PublishingExtension> {
         repositories {
-            maven("https://reposilit.varilx.de/releases") {
+            maven("https://reposilite.varilx.de/releases") {
                 name = "varilx-releases"
                 credentials {
                     username = System.getenv("VARILX_USER")
