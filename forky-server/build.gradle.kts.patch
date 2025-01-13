@@ -1,5 +1,13 @@
 --- a/purpur-server/build.gradle.kts
 +++ b/purpur-server/build.gradle.kts
+@@ -21,6 +_,7 @@
+     // gitFilePatches = true
+ 
+     val purpur = forks.register("purpur") {
++        rootDirectory = upstreamsDirectory().map { it.dir("purpur") }
+         upstream.patchDir("paperServer") {
+             upstreamPath = "paper-server"
+             excludes = setOf("src/minecraft", "patches", "build.gradle.kts")
 @@ -29,7 +_,28 @@
          }
      }
