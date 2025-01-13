@@ -16,3 +16,5 @@ build
 /purpur-api
 
 .idea/
+
+gradle.sh
