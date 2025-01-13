@@ -1,0 +1,14 @@
+--- a/src/main/java/io/papermc/paper/brigadier/NullCommandSender.java
++++ b/src/main/java/io/papermc/paper/brigadier/NullCommandSender.java
+@@ -26,6 +_,11 @@
+     }
+ 
+     @Override
++    public void sendTranslatedMessage(final String message) {
++
++    }
++
++    @Override
+     public void sendMessage(final String message) {
+     }
+ 

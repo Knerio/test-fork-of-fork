@@ -1,0 +1,15 @@
+--- a/src/main/java/org/bukkit/craftbukkit/command/ServerCommandSender.java
++++ b/src/main/java/org/bukkit/craftbukkit/command/ServerCommandSender.java
+@@ -88,6 +_,12 @@
+     }
+ 
+     @Override
++    public void sendTranslatedMessage(String message) {
++        System.out.println("IDK");
++    }
++
++
++    @Override
+     public void sendMessage(UUID uuid, String message) {
+         this.sendMessage(message); // ServerCommandSenders have no use for senders
+     }

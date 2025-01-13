@@ -17,6 +17,18 @@
      @Override
      public final io.papermc.paper.threadedregions.scheduler.RegionScheduler getRegionScheduler() {
          return this.regionizedScheduler;
+@@ -396,6 +_,11 @@
+     }
+     // Paper end - Folia reagion threading API
+ 
++    @Override
++    public CommonAPI getVarilxCommon() {
++        return this.commonAPI;
++    }
++
+     static {
+         ConfigurationSerialization.registerClass(CraftOfflinePlayer.class);
+         ConfigurationSerialization.registerClass(CraftPlayerProfile.class);
 @@ -406,6 +_,8 @@
  
      public CraftServer(DedicatedServer console, PlayerList playerList) {
