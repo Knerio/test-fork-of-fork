@@ -1,0 +1,75 @@
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -14,6 +_,8 @@
+ import java.util.UUID;
+ import java.util.function.Consumer;
+ import java.util.logging.Logger;
++import de.varilx.core.common.CommonAPI;
++import de.varilx.core.common.translation.Locale;
+ import org.bukkit.Warning.WarningState;
+ import org.bukkit.advancement.Advancement;
+ import org.bukkit.block.data.BlockData;
+@@ -125,6 +_,13 @@
+         // Paper end
+     }
+ 
++    //Varilx Start
++    public static @NotNull  CommonAPI getVarilxCommon() {
++        return getServer().getVarilxCommon();
++    }
++
++    //Varilx End
++
+     /**
+      * Gets the name of this server implementation.
+      *
+@@ -1918,6 +_,49 @@
+     public static Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull String title) throws IllegalArgumentException {
+         return server.createInventory(owner, size, title);
+     }
++
++
++    // Varilx - Start
++
++    /**
++     * Creates a translated inventory
++     * @param owner the owner
++     * @param titleKey the titlekey
++     * @return the inventory
++     * @see Bukkit#createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)
++     */
++    @NotNull
++    public static Inventory createTranslatedInventory(@Nullable InventoryHolder owner, int size, @NotNull String titleKey, @NotNull Object@NotNull ... args) {
++        return server.createTranslatedInventory(owner, size, titleKey, args);
++    }
++
++    /**
++     * Creates a translated inventory
++     * @param owner the owner
++     * @param titleKey the titlekey
++     * @return the inventory
++     * @see Bukkit#createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)
++     */
++    @NotNull
++    public static Inventory createTranslatedInventory(@Nullable InventoryHolder owner, int size, @NotNull String titleKey, @NotNull String project,@NotNull  Object@NotNull ... args) {
++        return server.createTranslatedInventory(owner, size, titleKey, project, args);
++    }
++
++    /**
++     * Creates a translated inventory
++     * @param owner the owner
++     * @param titleKey the titlekey
++     * @param locale the locale
++     * @param project the project
++     * @return the inventory
++     * @see Bukkit#createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)
++     */
++    @NotNull
++    public static Inventory createTranslatedInventory(@Nullable InventoryHolder owner, int size, @NotNull String titleKey, @NotNull String project, @NotNull Locale locale,@NotNull  Object@NotNull ... args) {
++        return server.createTranslatedInventory(owner, size, titleKey, project, locale, args);
++    }
++
++    // Varilx - End
+ 
+     // Paper start
+     /**

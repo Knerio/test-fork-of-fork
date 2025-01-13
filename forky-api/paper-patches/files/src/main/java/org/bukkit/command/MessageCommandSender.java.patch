@@ -1,0 +1,36 @@
+--- a/src/main/java/org/bukkit/command/MessageCommandSender.java
++++ b/src/main/java/org/bukkit/command/MessageCommandSender.java
+@@ -1,5 +_,6 @@
+ package org.bukkit.command;
+ 
++import de.varilx.core.common.translation.Locale;
+ import org.bukkit.Bukkit;
+ import org.bukkit.Server;
+ import org.bukkit.permissions.Permission;
+@@ -39,6 +_,26 @@
+             sendMessage(message);
+         }
+     }
++
++    // Varilx - Start
++
++    @Override
++    default void sendTranslatedMessage(String key, Object... args) {
++        throw new UnsupportedOperationException();
++    }
++
++    @Override
++    default void sendTranslatedMessage(String key, String project, Locale locale, Object... args) {
++        throw new UnsupportedOperationException();
++    }
++
++    @Override
++    default void sendTranslatedMessage(String key, String project, Object... args) {
++        throw new UnsupportedOperationException();
++    }
++
++    // Varilx - End
++
+ 
+     @NotNull
+     @Override

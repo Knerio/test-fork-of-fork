@@ -1,0 +1,11 @@
+--- a/src/main/java/io/papermc/paper/ServerBuildInfo.java
++++ b/src/main/java/io/papermc/paper/ServerBuildInfo.java
+@@ -23,7 +_,7 @@
+     /**
+      * The brand id for Purpur.
+      */
+-    Key BRAND_PURPUR_ID = Key.key("purpurmc", "purpur");
++    Key BRAND_PURPUR_ID = Key.key("vaxspigot", "vaxspigot");
+     // Purpur end
+     /**
+      * Gets the {@code ServerBuildInfo}.
