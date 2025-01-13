@@ -34,7 +34,7 @@
 +     * @param locale the locale
 +     * @param args the args (<1>, <2>, ...)
 +     */
-+    public void sendTranslatedMessage(@NotNull String key, @NotNull String project, @NotNull Object... args);
++    public void sendTranslatedMessage(@NotNull String key, @NotNull String project, @NotNull Locale locale, @NotNull Object... args);
 +    // Varilx - End
 +
      /**
