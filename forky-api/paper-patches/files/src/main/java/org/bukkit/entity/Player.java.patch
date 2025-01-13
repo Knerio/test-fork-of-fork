@@ -1,10 +1,7 @@
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -7,8 +_,11 @@
- import java.util.Collection;
- import java.util.Date;
+@@ -9,6 +_,8 @@
  import java.util.Map;
-+import java.util.Objects;
  import java.util.UUID;
  import java.util.concurrent.CompletableFuture;
 +import de.varilx.core.common.translation.Locale;
@@ -81,7 +78,7 @@
 +     * with the default Locale
 +     * @param bossbarKey the message key for the bossbar
 +     */
-+    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull Objects @NotNull ... args);
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull Object @NotNull ... args);
 +
 +    /**
 +     * Shows a translated bossbar to the user
@@ -89,7 +86,7 @@
 +     * @param bossbarKey the message key for the bossbar
 +     * @param bossBar the bossbar settings
 +     */
-+    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Objects @NotNull ... args);
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Object @NotNull ... args);
 +
 +    /**
 +     * Shows a translated bossbar to the user
@@ -98,7 +95,7 @@
 +     * @param project the project
 +     * @param bossBar the bossbar settings
 +     */
-+    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull String project, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Objects @NotNull ... args);
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull String project, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Object @NotNull ... args);
 +
 +    /**
 +     * Shows a translated bossbar to the user
@@ -108,7 +105,7 @@
 +     * @param bossBar the bossbar settings
 +     * @see #showBossBar(net.kyori.adventure.bossbar.BossBar)
 +     */
-+    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull String project, @NotNull Locale locale, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Objects @NotNull ... args);
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull String project, @NotNull Locale locale, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Object @NotNull ... args);
 +
 +    // Varilx - End
 +
