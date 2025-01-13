@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -7,8 +_,10 @@
+@@ -7,8 +_,11 @@
  import java.util.Collection;
  import java.util.Date;
  import java.util.Map;
@@ -8,6 +8,7 @@
  import java.util.UUID;
  import java.util.concurrent.CompletableFuture;
 +import de.varilx.core.common.translation.Locale;
++import net.kyori.adventure.title.Title;
  import org.bukkit.BanEntry;
  import org.bukkit.DyeColor;
  import org.bukkit.Effect;
@@ -19,11 +20,61 @@
  import org.bukkit.conversations.Conversable;
  import org.bukkit.event.block.BlockBreakEvent;
  import org.bukkit.event.block.BlockDropItemEvent;
-@@ -60,6 +_,44 @@
+@@ -60,6 +_,94 @@
   */
  public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, net.kyori.adventure.bossbar.BossBarViewer, com.destroystokyo.paper.network.NetworkClient { // Paper
  
 +    // Varilx - Start
++
++    /**
++     * Displays a translated title based on the specified title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull Object... args);
++
++
++    /**
++     * Displays a translated title based on the specified title key, project, locale, and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param project The name of the project used for translation context.
++     * @param locale The locale to use for translation.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull String project, @NotNull Locale locale, @NotNull Object... args);
++
++    /**
++     * Displays a translated title with specified times based on the title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param times The timing information for the title display.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull Title.Times times, @NotNull Object... args);
++
++    /**
++     * Displays a translated title with specified times and project based on the title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param project The name of the project used for translation context.
++     * @param times The timing information for the title display.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull String project, @NotNull Title.Times times, @NotNull Object... args);
++
++    /**
++     * Displays a translated title with specified times, project, and locale based on the title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param project The name of the project used for translation context.
++     * @param locale The locale to use for translation.
++     * @param times The timing information for the title display.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull String project, @NotNull Locale locale, @NotNull Title.Times times, @NotNull Object... args);
++
 +
 +    /**
 +     * Shows a translated bossbar to the user
@@ -75,7 +126,7 @@
       * @see <a href="https://minecraft.wiki/wiki/End_Poem#Technical_details">https://minecraft.wiki/wiki/End_Poem#Technical_details</a>
       */
      public void showWinScreen();
-@@ -1519,6 +_,39 @@
+@@ -1519,6 +_,30 @@
  
          return banEntry;
      }
@@ -91,15 +142,6 @@
 +     */
 +    public void sendTranslatedActionBar(@NotNull String messageKey, @NotNull Object@NotNull ... args);
 +
-+    /**
-+     * Sends a translated action bar
-+     * @param messageKey the message key
-+     * @param project the project
-+     * @param args the message args
-+     * @see #sendTranslatedActionBar(String, String, Locale, Object...)
-+     * @see #sendTranslatedMessage(String, String, Locale, Object...)
-+     */
-+    public void sendTranslatedActionBar(@NotNull String messageKey, @NotNull String project, @NotNull Object @NotNull... args);
 +
 +    /**
 +     * Sends a translated actionbar

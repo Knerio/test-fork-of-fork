@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/command/CommandSender.java
 +++ b/src/main/java/org/bukkit/command/CommandSender.java
-@@ -1,16 +_,49 @@
+@@ -1,16 +_,40 @@
  package org.bukkit.command;
  
  import java.util.UUID;
@@ -26,15 +26,6 @@
 +     * @see CommandSender#sendTranslatedMessage(String, String, Locale, Object...)
 +     */
 +    public void sendTranslatedMessage(@NotNull String key, @NotNull Object... args);
-+
-+    /**
-+     * This method sends a translated message
-+     * With the default {@link Locale}
-+     * @param key the message key
-+     * @param project the project where the key is located
-+     * @param args the args (<1>, <2>, ...)
-+     */
-+    public void sendTranslatedMessage(@NotNull String key, @NotNull String project, @NotNull Object... args);
 +
 +    /**
 +     * This method sends a translated message

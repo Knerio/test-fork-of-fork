@@ -1,11 +1,17 @@
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -14,6 +_,8 @@
+@@ -10,10 +_,14 @@
+ import java.util.Iterator;
+ import java.util.List;
+ import java.util.Map;
++import java.util.Objects;
+ import java.util.Set;
  import java.util.UUID;
  import java.util.function.Consumer;
  import java.util.logging.Logger;
 +import de.varilx.core.common.CommonAPI;
 +import de.varilx.core.common.translation.Locale;
++import net.kyori.adventure.title.Title;
  import org.bukkit.Warning.WarningState;
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
@@ -307,6 +313,171 @@
      <T extends Keyed> Registry<T> getRegistry(@NotNull Class<T> tClass);
  
      /**
+@@ -2255,6 +_,164 @@
+     @NotNull
+     UnsafeValues getUnsafe();
+ 
++    // Varilx Start
++
++    /**
++     * This method trys to find the project with the given key
++     * If not found uses the common project
++     * @param key the key
++     * @param args the args for the message
++     * @see CommandSender#sendTranslatedMessage(String, String, Locale, Object...)
++     */
++    public void sendTranslatedMessage(@NotNull String key, @NotNull Object... args);
++
++    /**
++     * This method sends a translated message
++     * @param key the message key
++     * @param project the project where the key is located
++     * @param locale the locale
++     * @param args the args (<1>, <2>, ...)
++     */
++    public void sendTranslatedMessage(@NotNull String key, @NotNull String project, @NotNull Locale locale, @NotNull Object... args);
++
++    /**
++     * Displays a translated title based on the specified title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull Object... args);
++
++    /**
++     * Displays a translated title based on the specified title key, project, locale, and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param project The name of the project used for translation context.
++     * @param locale The locale to use for translation.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull String project, @NotNull Locale locale, @NotNull Object... args);
++
++    /**
++     * Displays a translated title with specified times based on the title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param times The timing information for the title display.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull Title.Times times, @NotNull Object... args);
++
++    /**
++     * Displays a translated title with specified times and project based on the title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param project The name of the project used for translation context.
++     * @param times The timing information for the title display.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull String project, @NotNull Title.Times times, @NotNull Object... args);
++
++    /**
++     * Displays a translated title with specified times, project, and locale based on the title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param project The name of the project used for translation context.
++     * @param locale The locale to use for translation.
++     * @param times The timing information for the title display.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull String project, @NotNull Locale locale, @NotNull Title.Times times, @NotNull Object... args);
++
++
++    /**
++     * Shows a translated bossbar to the whole server
++     * with the default Locale
++     * @param bossbarKey the message key for the bossbar
++     */
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull Objects @NotNull ... args);
++
++    /**
++     * Shows a translated bossbar to the whole server
++     * with the default Locale
++     * @param bossbarKey the message key for the bossbar
++     * @param bossBar the bossbar settings
++     */
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Objects @NotNull ... args);
++
++    /**
++     * Shows a translated bossbar to the whole server
++     * with the default Locale
++     * @param bossbarKey the message key for the bossbar
++     * @param project the project
++     * @param bossBar the bossbar settings
++     */
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull String project, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Objects @NotNull ... args);
++
++    /**
++     * Shows a translated bossbar to the whole server
++     * @param bossbarKey the message key for the bossbar
++     * @param project the project
++     * @param locale the locale
++     * @param bossBar the bossbar settings
++     * @see #showBossBar(net.kyori.adventure.bossbar.BossBar)
++     */
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull String project, @NotNull Locale locale, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Objects @NotNull ... args);
++
++    /**
++     * Sends a translated action bar
++     * @param messageKey the message key
++     * @param args the args for the messag
++     * @see #sendTranslatedActionBar(String, String, Locale, Object...)
++     * @see #sendTranslatedMessage(String, String, Locale, Object...)
++     */
++    public void sendTranslatedActionBar(@NotNull String messageKey, @NotNull Object@NotNull ... args);
++
++
++    /**
++     * Sends a translated actionbar
++     * @param messageKey the message key
++     * @param project the project
++     * @param locale the locale
++     * @param args the args
++     * @see #sendTranslatedMessage(String, String, Locale, Object...)
++     */
++    public void sendTranslatedActionBar(@NotNull String messageKey, @NotNull String project, @NotNull Locale locale, Object @NotNull... args);
++
++
++
++    /**
++     * Sends a translated broadcast message based on the specified message key and arguments.
++     *
++     * @param messageKey The key for the broadcast message translation.
++     * @param args The arguments to be used in the translation.
++     * @return An integer representing the result of the broadcast operation.
++     */
++    int translatedBroadcast(@NotNull String messageKey, @NotNull Object[] args);
++
++    /**
++     * Sends a translated broadcast message based on the specified message key, project, and arguments.
++     *
++     * @param messageKey The key for the broadcast message translation.
++     * @param project The name of the project used for translation context.
++     * @param args The arguments to be used in the translation.
++     * @return An integer representing the result of the broadcast operation.
++     */
++    int translatedBroadcast(@NotNull String messageKey, @NotNull String project, @NotNull Object[] args);
++
++    /**
++     * Sends a translated broadcast message based on the specified message key, project, locale, and arguments.
++     *
++     * @param messageKey The key for the broadcast message translation.
++     * @param project The name of the project used for translation context.
++     * @param locale The locale to use for translation.
++     * @param args The arguments to be used in the translation.
++     * @return An integer representing the result of the broadcast operation.
++     */
++    int translatedBroadcast(@NotNull String messageKey, @NotNull String project, @NotNull Locale locale, @NotNull Object[] args);
++
++
++    // Varilx End
++
+     // Spigot start
+     public class Spigot {
+ 
 @@ -2265,20 +_,17 @@
  
          // Paper start

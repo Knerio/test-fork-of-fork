@@ -7,7 +7,7 @@
  import org.bukkit.Bukkit;
  import org.bukkit.Server;
  import org.bukkit.permissions.Permission;
-@@ -39,6 +_,26 @@
+@@ -39,6 +_,21 @@
              sendMessage(message);
          }
      }
@@ -21,11 +21,6 @@
 +
 +    @Override
 +    default void sendTranslatedMessage(String key, String project, Locale locale, Object... args) {
-+        throw new UnsupportedOperationException();
-+    }
-+
-+    @Override
-+    default void sendTranslatedMessage(String key, String project, Object... args) {
 +        throw new UnsupportedOperationException();
 +    }
 +

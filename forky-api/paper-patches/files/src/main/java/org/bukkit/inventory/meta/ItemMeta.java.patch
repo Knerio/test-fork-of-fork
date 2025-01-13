@@ -16,7 +16,7 @@
      /**
       * Checks for existence of a custom name.
       *
-@@ -63,6 +_,35 @@
+@@ -63,6 +_,27 @@
       */
      void customName(final net.kyori.adventure.text.@Nullable Component customName);
  
@@ -30,14 +30,6 @@
 +     */
 +    void customTranslationName(@NotNull String messageKey, @NotNull Object... args);
 +
-+    /**
-+     * Sets the custom name with translation with the default locale
-+     * @param messageKey the message key
-+     * @param project the project
-+     * @param args the args
-+     * @see #customTranslationName(String, String, Locale, Object...)
-+     */
-+    void customTranslationName(@NotNull String messageKey, @NotNull String project, @NotNull Object @NotNull ... args);
 +
 +    /**
 +     * Sets the custom name with translation
@@ -123,7 +115,7 @@
      /**
       * Gets the lore.
       *
-@@ -266,6 +_,37 @@
+@@ -266,6 +_,28 @@
       * @param lore the lore to set
       */
      void lore(final @Nullable List<? extends net.kyori.adventure.text.Component> lore);
@@ -137,15 +129,6 @@
 +     * @see #translationsLore(String, String, Locale, Object...)
 +     */
 +    void translationsLore(@NotNull String loreKey, @NotNull Object @NotNull ... args);
-+
-+    /**
-+     * Sets the translations lore
-+     * @param loreKey the lore
-+     * @param project the project
-+     * @param args the args
-+     * @see #translationsLore(String, String, Locale, Object...)
-+     */
-+    void translationsLore(@NotNull String loreKey, @NotNull String project, @NotNull Object @NotNull ... args);
 +
 +    /**
 +     * Sets the translations lore

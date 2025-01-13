@@ -23,6 +23,46 @@
      /**
       * Gets the name of this server implementation.
       *
+@@ -1452,6 +_,39 @@
+         server.shutdown();
+     }
+ 
++    // Varilx Start
++
++    /**
++     * Sends a translated broadcast message based on the specified message key and arguments.
++     *
++     * This method uses the server instance to perform the broadcast.
++     *
++     * @param messageKey The key for the broadcast message translation.
++     * @param args The arguments to be used in the translation.
++     * @return An integer representing the result of the broadcast operation.
++     */
++    public static int translatedBroadcast(@NotNull String messageKey, @NotNull Object... args) {
++        return server.translatedBroadcast(messageKey, args);
++    }
++
++    /**
++     * Sends a translated broadcast message based on the specified message key, project, locale, and arguments.
++     *
++     * This method uses the server instance to perform the broadcast.
++     *
++     * @param messageKey The key for the broadcast message translation.
++     * @param project The name of the project used for translation context.
++     * @param locale The locale to use for translation.
++     * @param args The arguments to be used in the translation.
++     * @return An integer representing the result of the broadcast operation.
++     */
++    public static int translatedBroadcast(@NotNull String messageKey, @NotNull String project, @NotNull Locale locale, @NotNull Object... args) {
++        return server.translatedBroadcast(messageKey, project, locale, args);
++    }
++
++
++    // Varilx End
++
+     // Paper start
+     /**
+      * Broadcast a message to all players.
 @@ -1918,6 +_,49 @@
      public static Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull String title) throws IllegalArgumentException {
          return server.createInventory(owner, size, title);
