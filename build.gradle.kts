@@ -7,17 +7,17 @@ plugins {
 }
 
 paperweight {
-    upstreams.register("fork") {
-        repo = github("PaperMC", "paperweight-examples")
+    upstreams.register("purpur") {
+        repo = github("PurpurMC", "Purpur")
         ref = providers.gradleProperty("forkRef")
 
         patchFile {
-            path = "fork-server/build.gradle.kts"
+            path = "purpur-server/build.gradle.kts"
             outputFile = file("forky-server/build.gradle.kts")
             patchFile = file("forky-server/build.gradle.kts.patch")
         }
         patchFile {
-            path = "fork-api/build.gradle.kts"
+            path = "purpur-api/build.gradle.kts"
             outputFile = file("forky-api/build.gradle.kts")
             patchFile = file("forky-api/build.gradle.kts.patch")
         }
@@ -31,11 +31,11 @@ paperweight {
             patchesDir = file("forky-api-generator/paper-patches")
             outputDir = file("paper-api-generator")
         }
-        patchDir("forkApi") {
-            upstreamPath = "fork-api"
+        patchDir("purpurApi") {
+            upstreamPath = "purpur-api"
             excludes = listOf("build.gradle.kts", "build.gradle.kts.patch", "paper-patches")
-            patchesDir = file("forky-api/fork-patches")
-            outputDir = file("fork-api")
+            patchesDir = file("forky-api/purpur-patches")
+            outputDir = file("purpur-api")
         }
     }
 }

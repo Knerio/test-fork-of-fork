@@ -1,30 +1,28 @@
---- a/fork-server/build.gradle.kts
-+++ b/fork-server/build.gradle.kts
-@@ -22,6 +_,7 @@
-     // gitFilePatches = true
- 
-     val fork = forks.register("fork") {
-+        rootDirectory = upstreamsDirectory().map { it.dir("fork") }
-         upstream.patchDir("paperServer") {
-             upstreamPath = "paper-server"
-             excludes = setOf("src/minecraft", "patches", "build.gradle.kts")
-@@ -30,7 +_,22 @@
+--- a/purpur-server/build.gradle.kts
++++ b/purpur-server/build.gradle.kts
+@@ -29,7 +_,28 @@
          }
      }
  
--    activeFork = fork
+-    activeFork = purpur
 +    val forky = forks.register("forky") {
-+        forks = fork
++        forks = purpur
 +        upstream.patchRepo("paperServer") {
-+            upstreamRepo = fork.patchedRepo("paperServer")
++            upstreamRepo = purpur.patchedRepo("paperServer")
 +            patchesDir = rootDirectory.dir("forky-server/paper-patches")
 +            outputDir = rootDirectory.dir("paper-server")
 +        }
-+        upstream.patchDir("forkServer") {
-+            upstreamPath = "fork-server"
-+            excludes = setOf("src/minecraft", "paper-patches", "minecraft-patches", "build.gradle.kts", "build.gradle.kts.patch")
-+            patchesDir = rootDirectory.dir("forky-server/fork-patches")
-+            outputDir = rootDirectory.dir("fork-server")
++        upstream.patchDir("purpurServer") {
++            upstreamPath = "purpur-server"
++            excludes = setOf(
++                "src/minecraft",
++                "paper-patches",
++                "minecraft-patches",
++                "build.gradle.kts",
++                "build.gradle.kts.patch"
++            )
++            patchesDir = rootDirectory.dir("forky-server/purpur-patches")
++            outputDir = rootDirectory.dir("purpur-server")
 +        }
 +    }
 +
@@ -32,27 +30,54 @@
  
      paper {
          paperServerDir = upstreamsDirectory().map { it.dir("paper/paper-server") }
-@@ -120,10 +_,14 @@
+@@ -67,6 +_,7 @@
+     @get:Inject
+     abstract val archiveOperations: ArchiveOperations
+ }
++
+ val services = objects.newInstance<Services>()
+ 
+ if (project.providers.gradleProperty("publishDevBundle").isPresent) {
+@@ -119,10 +_,14 @@
      main {
          java { srcDir("../paper-server/src/main/java") }
          resources { srcDir("../paper-server/src/main/resources") }
-+        java { srcDir("../fork-server/src/main/java") }
-+        resources { srcDir("../fork-server/src/main/resources") }
++        java { srcDir("../purpur-server/src/main/java") }
++        resources { srcDir("../purpur-server/src/main/resources") }
      }
      test {
          java { srcDir("../paper-server/src/test/java") }
          resources { srcDir("../paper-server/src/test/resources") }
-+        java { srcDir("../fork-server/src/test/java") }
-+        resources { srcDir("../fork-server/src/test/resources") }
++        java { srcDir("../purpur-server/src/main/java") }
++        resources { srcDir("../purpur-server/src/main/resources") }
      }
  }
+ val log4jPlugins = sourceSets.create("log4jPlugins") {
+@@ -135,6 +_,7 @@
  
-@@ -147,7 +_,7 @@
- }
+ // Paper start - configure mockito agent that is needed in newer java versions
+ val mockitoAgent = configurations.register("mockitoAgent")
++
+ abstract class MockitoAgentProvider : CommandLineArgumentProvider {
+     @get:CompileClasspath
+     abstract val fileCollection: ConfigurableFileCollection
+@@ -146,7 +_,7 @@
+ // Paper end - configure mockito agent that is needed in newer java versions
  
  dependencies {
--    implementation(project(":fork-api"))
+-    implementation(project(":purpur-api"))
 +    implementation(project(":forky-api"))
-     implementation("ca.spottedleaf:concurrentutil:0.0.2")
+     implementation("ca.spottedleaf:concurrentutil:0.0.2") // Paper - Add ConcurrentUtil dependency
+     // Paper start
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
-     implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
+@@ -191,7 +_,9 @@
+     testImplementation("org.junit.platform:junit-platform-suite-engine:1.10.0")
+     testImplementation("org.hamcrest:hamcrest:2.2")
+     testImplementation("org.mockito:mockito-core:5.14.1")
+-    mockitoAgent("org.mockito:mockito-core:5.14.1") { isTransitive = false } // Paper - configure mockito agent that is needed in newer java versions
++    mockitoAgent("org.mockito:mockito-core:5.14.1") {
++        isTransitive = false
++    } // Paper - configure mockito agent that is needed in newer java versions
+     testImplementation("org.ow2.asm:asm-tree:9.7.1")
+     testImplementation("org.junit-pioneer:junit-pioneer:2.2.0") // Paper - CartesianTest
+     implementation("net.neoforged:srgutils:1.0.9") // Paper - mappings handling

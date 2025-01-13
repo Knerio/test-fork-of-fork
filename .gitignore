@@ -9,10 +9,10 @@ build
 /forky-server/build.gradle.kts
 /forky-server/src/minecraft
 /paper-server
-/fork-server
+/purpur-server
 /forky-api/build.gradle.kts
 /paper-api
 /paper-api-generator
-/fork-api
+/purpur-api
 
 .idea/
