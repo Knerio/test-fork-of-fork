@@ -89,12 +89,13 @@ subprojects {
 
     extensions.configure<PublishingExtension> {
         repositories {
-            /*
-            maven("https://repo.papermc.io/repository/maven-snapshots/") {
-                name = "paperSnapshots"
-                credentials(PasswordCredentials::class)
+            maven("https://reposilit.varilx.de/releases") {
+                name = "varilx releases"
+                credentials {
+                    username = System.getenv("VARILX_USER")
+                    password = System.getenv("VARILX_TOKEN")
+                }
             }
-             */
         }
     }
 }

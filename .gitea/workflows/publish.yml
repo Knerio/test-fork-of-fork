@@ -31,44 +31,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - name: Configure Git
         run: git config --global user.email "no-reply@github.com" && git config --global user.name "Github Actions"
-      - name: Get commit hash
-        run: |
-          COMMIT_HASH=$(git rev-parse --short HEAD)
-          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
-      - name: Set version
-        run: |
-          VERSION=${{ github.event.release.name }}
-          if [ "${{ github.event.release.prerelease }}" = "true" ]; then
-            FULL_VERSION="${VERSION}-commit-${COMMIT_HASH}"
-          else
-            FULL_VERSION="${VERSION}"
-          fi
-          echo "Setting version to $FULL_VERSION"
-          sed -i "s/^version = .*/version = $FULL_VERSION/" gradle.properties
-          echo "FULL_VERSION=$FULL_VERSION" >> $GITHUB_ENV
       - name: Apply Patches
         run: ./gradlew applyAllPatches --no-daemon --stacktrace
         env:
           VARILX_USER: ${{ secrets.VARILX_USER }}
           VARILX_TOKEN: ${{ secrets.VARILX_TOKEN }}
-      - name: Publish
-        run: ./gradlew publish --no-daemon --stacktrace
-        env:
-          VARILX_USER: ${{ secrets.VARILX_USER }}
-          VARILX_TOKEN: ${{ secrets.VARILX_TOKEN }}
-      - name: Republish on Failure
-        if: ${{ failure() }}
-        run: |
-          ./gradlew clean cleanCache
-          ./gradlew applyPatches --no-daemon --stacktrace 
-          ./gradlew publish --no-daemon --stacktrace
-        env:
-          VARILX_USER: ${{ secrets.VARILX_USER }}
-          VARILX_TOKEN: ${{ secrets.VARILX_TOKEN }}
-      - name: Set build number
-        run: |
-          VERSION=${{ github.event.release.name }}
-          sed -i "s/^version = .*/version = $VERSION/" gradle.properties
       - name: Build Mojmap Bundler Jar
         run: ./gradlew createMojmapBundlerJar
         env:
