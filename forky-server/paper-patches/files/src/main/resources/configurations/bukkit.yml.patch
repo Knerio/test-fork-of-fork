@@ -1,0 +1,10 @@
+--- a/src/main/resources/configurations/bukkit.yml
++++ b/src/main/resources/configurations/bukkit.yml
+@@ -10,6 +_,7 @@
+ # Forums: https://www.spigotmc.org/
+ # Bug tracker: https://www.spigotmc.org/go/bugs
+ 
++gitea-token: "some-token"
+ 
+ settings:
+     allow-end: true

@@ -8,7 +8,7 @@
  import net.kyori.adventure.text.Component;
  import net.md_5.bungee.api.chat.BaseComponent;
  import org.bukkit.Bukkit;
-@@ -24,6 +_,27 @@
+@@ -24,6 +_,22 @@
  
      private NullCommandSender() {
      }
@@ -19,11 +19,6 @@
 +
 +    @Override
 +    public void sendTranslatedMessage(final String key, final Object... args) {
-+
-+    }
-+
-+    @Override
-+    public void sendTranslatedMessage(final String key, final String project, final Object... args) {
 +
 +    }
 +

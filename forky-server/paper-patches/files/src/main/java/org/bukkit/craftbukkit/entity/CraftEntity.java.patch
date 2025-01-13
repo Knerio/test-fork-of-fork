@@ -25,7 +25,7 @@
  
  public abstract class CraftEntity implements org.bukkit.entity.Entity {
      private static PermissibleBase perm;
-@@ -733,6 +_,26 @@
+@@ -733,6 +_,22 @@
      public void sendMessage(String message) {
  
      }
@@ -35,13 +35,9 @@
 +
 +    @Override
 +    public void sendTranslatedMessage(final String key, final Object... args) {
-+        this.sendMessage(Bukkit.getVarilxCommon().getTranslationService().getDefaulComponent(key, args));
++        this.sendMessage(Bukkit.getVarilxCommon().getTranslationService().getDefaultComponent(key, args));
 +    }
 +
-+    @Override
-+    public void sendTranslatedMessage(@NotNull final String key, final String project, Object... args) {
-+        this.sendTranslatedMessage(key, project, Locale.DE, args);
-+    }
 +
 +    @Override
 +    public void sendTranslatedMessage(@NotNull final String key, final String project, final Locale locale, Object... args) {

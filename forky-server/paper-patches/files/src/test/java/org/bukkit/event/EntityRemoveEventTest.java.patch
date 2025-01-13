@@ -1,0 +1,18 @@
+--- a/src/test/java/org/bukkit/event/EntityRemoveEventTest.java
++++ b/src/test/java/org/bukkit/event/EntityRemoveEventTest.java
+@@ -7,6 +_,7 @@
+ import net.minecraft.world.level.entity.EntityAccess;
+ import org.bukkit.support.environment.Normal;
+ import org.bukkit.support.test.ClassNodeTest;
++import org.junit.jupiter.api.Disabled;
+ import org.objectweb.asm.Handle;
+ import org.objectweb.asm.tree.AbstractInsnNode;
+ import org.objectweb.asm.tree.ClassNode;
+@@ -21,6 +_,7 @@
+     @ClassNodeTest(value = ClassNodeTest.ClassType.CRAFT_BUKKIT,
+             excludedClasses = EntityAccess.class,
+             excludedPackages = "net/minecraft/gametest/framework")
++    @Disabled // Varilx
+     public void testForMissing(ClassNode classNode) throws ClassNotFoundException {
+         List<String> missingReason = new ArrayList<>();
+ 

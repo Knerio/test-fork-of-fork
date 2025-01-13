@@ -1,0 +1,99 @@
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
+@@ -5,6 +_,7 @@
+ import com.google.common.io.BaseEncoding;
+ import com.mojang.authlib.GameProfile;
+ import com.mojang.datafixers.util.Pair;
++import de.varilx.core.common.translation.Locale;
+ import io.netty.buffer.Unpooled;
+ import io.papermc.paper.FeatureHooks;
+ import it.unimi.dsi.fastutil.shorts.ShortArraySet;
+@@ -196,6 +_,7 @@
+ import org.bukkit.profile.PlayerProfile;
+ import org.bukkit.scoreboard.Scoreboard;
+ import org.jetbrains.annotations.NotNull;
++import net.kyori.adventure.title.Title;
+ 
+ import net.md_5.bungee.api.chat.BaseComponent; // Spigot
+ 
+@@ -219,6 +_,33 @@
+     private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
+     private long lastSaveTime; // Paper - getLastPlayed replacement API
+ 
++    @Override
++    public void showTranslatedTitle(@NotNull final String titleKey, final @NotNull Object... args) {
++        this.showTranslatedTitle(titleKey, Title.DEFAULT_TIMES, args);
++    }
++
++    @Override
++    public void showTranslatedTitle(@NotNull final String titleKey, @NotNull final String project, @NotNull final Locale locale, final @NotNull Object... args) {
++        this.showTranslatedTitle(titleKey, project, locale, Title.DEFAULT_TIMES, args);
++    }
++
++    @Override
++    public void showTranslatedTitle(@NotNull final String titleKey, final Title.@NotNull Times times, final @NotNull Object... args) {
++        final List<net.kyori.adventure.text.Component> components = Bukkit.getVarilxCommon().getTranslationService().getDefaultComponents(titleKey, args);
++        this.showTitle(Title.title(components.getFirst(), components.getLast(), times));
++    }
++
++    @Override
++    public void showTranslatedTitle(@NotNull final String titleKey, @NotNull final String project, final Title.@NotNull Times times, final @NotNull Object... args) {
++        this.showTranslatedTitle(titleKey, project, Locale.DE, times, args);
++    }
++
++    @Override
++    public void showTranslatedTitle(@NotNull final String titleKey, @NotNull final String project, @NotNull final Locale locale, final Title.@NotNull Times times, final @NotNull Object... args) {
++        final List<net.kyori.adventure.text.Component> components = Bukkit.getVarilxCommon().getTranslationService().getComponents(titleKey, project, locale, args);
++        this.showTitle(Title.title(components.getFirst(), components.getLast(), times));
++    }
++
+     public CraftPlayer(CraftServer server, ServerPlayer entity) {
+         super(server, entity);
+ 
+@@ -3272,6 +_,46 @@
+     // resetTitle implemented above
+ 
+     private @Nullable Set<net.kyori.adventure.bossbar.BossBar> activeBossBars;
++
++    // Varilx - Start
++
++    @Override
++    public void showTranslatedBossbar(final String bossbarKey, final Objects... args) {
++        net.kyori.adventure.text.Component title = Bukkit.getVarilxCommon().getTranslationService().getDefaultComponent(bossbarKey, (Object[]) args);
++        this.showBossBar(BossBar.bossBar(title, 0f, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS));
++    }
++
++    @Override
++    public void showTranslatedBossbar(final String bossbarKey, final BossBar bossBar, final Objects... args) {
++        net.kyori.adventure.text.Component title = Bukkit.getVarilxCommon().getTranslationService().getDefaultComponent(bossbarKey, (Object[]) args);
++        bossBar.name(title);
++        this.showBossBar(bossBar);
++    }
++
++    @Override
++    public void showTranslatedBossbar(final String bossbarKey, final String project, final BossBar bossBar, final Objects... args) {
++        this.showTranslatedBossbar(bossbarKey, project, Locale.DE, bossBar, args);
++    }
++
++    @Override
++    public void showTranslatedBossbar(final String bossbarKey, final String project, final Locale locale, final BossBar bossBar, final Objects... args) {
++        net.kyori.adventure.text.Component title = Bukkit.getVarilxCommon().getTranslationService().getComponent(bossbarKey, project, locale, (Object[]) args);
++        bossBar.name(title);
++        this.showBossBar(bossBar);
++    }
++
++    @Override
++    public void sendTranslatedActionBar(final String messageKey, final Object... args) {
++        this.sendActionBar(Bukkit.getVarilxCommon().getTranslationService().getDefaultComponent(messageKey, args));
++    }
++
++
++    @Override
++    public void sendTranslatedActionBar(final String messageKey, final String project, final Locale locale, final Object... args) {
++        this.sendActionBar(Bukkit.getVarilxCommon().getTranslationService().getComponent(messageKey, project, locale, args));
++    }
++
++    // Varilx - End
+ 
+     @Override
+     public @NotNull Iterable<? extends net.kyori.adventure.bossbar.BossBar> activeBossBars() {

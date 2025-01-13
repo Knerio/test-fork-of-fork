@@ -1,0 +1,34 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
+@@ -950,6 +_,31 @@
+         return result;
+     }
+ 
++    // Varilx - Start
++
++    @Override
++    public void customTranslationName(final String messageKey, final Object... args) {
++        this.customName(Bukkit.getVarilxCommon().getTranslationService().getDefaultComponent(messageKey, args));
++    }
++
++    @Override
++    public void customTranslationName(final String messageKey, final String project, final de.varilx.core.common.translation.Locale locale, final Object... args) {
++        this.customName(Bukkit.getVarilxCommon().getTranslationService().getComponent(messageKey, project, locale, args));
++    }
++
++
++    @Override
++    public void translationsLore(final String loreKey, final Object... args) {
++        this.lore(Bukkit.getVarilxCommon().getTranslationService().getDefaultComponents(loreKey, args));
++    }
++
++    @Override
++    public void translationsLore(final String loreKey, final String project, final de.varilx.core.common.translation.Locale locale, final Object... args) {
++        this.lore(Bukkit.getVarilxCommon().getTranslationService().getComponents(loreKey, project, locale, args));
++    }
++
++    // Varilx - End
++
+     @Overridden
+     void applyToItem(CraftMetaItem.Applicator itemTag) {
+         if (this.hasDisplayName()) {

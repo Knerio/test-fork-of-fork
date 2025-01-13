@@ -8,7 +8,7 @@
  import net.minecraft.commands.CommandSourceStack;
  import org.bukkit.Server;
  import org.bukkit.command.CommandSender;
-@@ -36,6 +_,25 @@
+@@ -36,6 +_,20 @@
      public CommandSender getCallee() {
          return this.callee;
      }
@@ -17,11 +17,6 @@
 +
 +    @Override
 +    public void sendTranslatedMessage(final String key, final Object... args) {
-+
-+    }
-+
-+    @Override
-+    public void sendTranslatedMessage(final String key, final String project, final Object... args) {
 +
 +    }
 +

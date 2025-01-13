@@ -16,7 +16,7 @@
  
  public abstract class ServerCommandSender implements CommandSender {
      public final PermissibleBase perm; // Paper
-@@ -86,6 +_,26 @@
+@@ -86,6 +_,22 @@
      public Server getServer() {
          return Bukkit.getServer();
      }
@@ -29,10 +29,6 @@
 +
 +    }
 +
-+    @Override
-+    public void sendTranslatedMessage(final String key, final String project, final Object... args) {
-+
-+    }
 +
 +    @Override
 +    public void sendTranslatedMessage(final String key, final String project, final Locale locale, final Object... args) {

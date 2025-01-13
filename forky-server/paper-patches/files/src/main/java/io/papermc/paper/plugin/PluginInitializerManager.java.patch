@@ -1,0 +1,36 @@
+--- a/src/main/java/io/papermc/paper/plugin/PluginInitializerManager.java
++++ b/src/main/java/io/papermc/paper/plugin/PluginInitializerManager.java
+@@ -8,6 +_,7 @@
+ import io.papermc.paper.plugin.provider.type.paper.PaperPluginParent;
+ import io.papermc.paper.plugin.provider.type.spigot.SpigotPluginProvider;
+ import io.papermc.paper.pluginremap.PluginRemapper;
++import java.nio.file.StandardCopyOption;
+ import java.util.Set;
+ import java.util.TreeSet;
+ import java.util.function.Function;
+@@ -104,6 +_,25 @@
+     }
+ 
+     public static void load(OptionSet optionSet) throws Exception {
++        LOGGER.info("Copying plugins from load-plugins...");
++        // Varilx start - copy plugins from load-plugins
++        final File topCopyDir = (File) optionSet.valueOf("load-plugins");
++        topCopyDir.mkdirs();
++        for (final File copyPlugin : topCopyDir.listFiles()) {
++            if (copyPlugin.isDirectory()) continue;
++            if (!copyPlugin.getName().endsWith(".jar")) {
++                LOGGER.warn("File {} is not a jar, cannot replace" , copyPlugin);
++                continue;
++            }
++            final File pluginsFolder = new File(copyPlugin.toString().replace("load-plugins", "plugins"));
++
++            Files.copy(copyPlugin.toPath(), pluginsFolder.toPath(), StandardCopyOption.REPLACE_EXISTING);
++            copyPlugin.delete();
++
++            LOGGER.info("Replaced plugin {}", copyPlugin.toPath());
++        }
++        // Varilx end - copy plugins from load-plugins
++
+         LOGGER.info("Initializing plugins...");
+         // We have to load the bukkit configuration inorder to get the update folder location.
+         io.papermc.paper.plugin.PluginInitializerManager pluginSystem = io.papermc.paper.plugin.PluginInitializerManager.init(optionSet);

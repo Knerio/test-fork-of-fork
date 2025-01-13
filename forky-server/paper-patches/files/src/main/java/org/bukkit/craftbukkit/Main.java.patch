@@ -1,0 +1,17 @@
+--- a/src/main/java/org/bukkit/craftbukkit/Main.java
++++ b/src/main/java/org/bukkit/craftbukkit/Main.java
+@@ -190,6 +_,14 @@
+                         .defaultsTo("Unknown Server")
+                         .describedAs("Name");
+                 // Paper end
++
++                // Varilx start - Copy plugins before startup, to keep ClassNotFoundExceptions out of the way
++                accepts("load-plugins")
++                    .withRequiredArg()
++                    .ofType(File.class)
++                    .defaultsTo(new File("load-plugins"))
++                    .describedAs("Loaded plugins before startup");
++                // Varilx end - Copy plugins before startup, to keep ClassNotFoundExceptions out of the way
+             }
+         };
+ 
