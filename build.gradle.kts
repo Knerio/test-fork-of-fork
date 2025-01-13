@@ -55,6 +55,13 @@ subprojects {
     repositories {
         mavenCentral()
         maven(paperMavenPublicUrl)
+        maven {
+            url = uri("https://reposilite.varilx.de/releases")
+            credentials {
+                username = System.getenv("VARILX_USER")
+                password = System.getenv("VARILX_TOKEN")
+            }
+        }
     }
 
     tasks.withType<AbstractArchiveTask>().configureEach {

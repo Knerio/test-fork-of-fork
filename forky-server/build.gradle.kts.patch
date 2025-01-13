@@ -69,11 +69,15 @@
  abstract class MockitoAgentProvider : CommandLineArgumentProvider {
      @get:CompileClasspath
      abstract val fileCollection: ConfigurableFileCollection
-@@ -146,7 +_,7 @@
+@@ -146,7 +_,11 @@
  // Paper end - configure mockito agent that is needed in newer java versions
  
  dependencies {
 -    implementation(project(":purpur-api"))
++    // Varilx Start
++    implementation(group = "de.varilx.coreapi", name = "common", version = "2.5.3-commit-83286e2", classifier = "shadow")
++    // Varilx end
++
 +    implementation(project(":forky-api"))
      implementation("ca.spottedleaf:concurrentutil:0.0.2") // Paper - Add ConcurrentUtil dependency
      // Paper start
