@@ -35,7 +35,7 @@ public class SkullBuilder extends BaseItemBuilder<@NotNull SkullBuilder, @NotNul
      * Constructs a new {@link SkullBuilder} based on an {@link ItemStack}
      * @param itemStack the {@link ItemStack}
      */
-    public SkullBuilder(ItemStack itemStack) {
+    public SkullBuilder(@NotNull ItemStack itemStack) {
         super(itemStack);
         if (isNonValidSkull()) throw new IllegalArgumentException("ItemStack is no skull");
     }
@@ -44,7 +44,7 @@ public class SkullBuilder extends BaseItemBuilder<@NotNull SkullBuilder, @NotNul
      * Constructs a new {@link SkullBuilder} based on a {@link Material}
      * @param material the {@link Material}
      */
-    public SkullBuilder(Material material) {
+    public SkullBuilder(@NotNull Material material) {
         super(material);
         if (isNonValidSkull()) throw new IllegalArgumentException("ItemStack is no skull");
     }
@@ -54,7 +54,7 @@ public class SkullBuilder extends BaseItemBuilder<@NotNull SkullBuilder, @NotNul
      * @param material the {@link Material}
      * @param amount the amount for the new {@link ItemStack}
      */
-    public SkullBuilder(Material material, int amount) {
+    public SkullBuilder(@NotNull Material material, int amount) {
         super(material, amount);
         if (isNonValidSkull()) throw new IllegalArgumentException("ItemStack is no skull");
     }
@@ -65,7 +65,7 @@ public class SkullBuilder extends BaseItemBuilder<@NotNull SkullBuilder, @NotNul
      * @param amount the amount for the new {@link ItemStack}
      * @param meta the meta for the new {@link ItemMeta}
      */
-    public SkullBuilder(Material material, int amount, ItemMeta meta) {
+    public SkullBuilder(@NotNull Material material, int amount, @NotNull ItemMeta meta) {
         super(material, amount, meta);
         if (isNonValidSkull()) throw new IllegalArgumentException("ItemStack is no skull");
     }
@@ -76,7 +76,8 @@ public class SkullBuilder extends BaseItemBuilder<@NotNull SkullBuilder, @NotNul
      * @return this to make chain call
      * @see SkullMeta#setPlayerProfile(PlayerProfile)
      */
-    public SkullBuilder playerProfile(PlayerProfile profile) {
+    @NotNull
+    public SkullBuilder playerProfile(@NotNull PlayerProfile profile) {
         Preconditions.checkNotNull(profile, "profile");
         return editMeta(skullMeta -> skullMeta.setPlayerProfile(profile));
     }
@@ -87,7 +88,8 @@ public class SkullBuilder extends BaseItemBuilder<@NotNull SkullBuilder, @NotNul
      * @return this to make chain calls
      * @see SkullMeta#setOwningPlayer(OfflinePlayer)
      */
-    public SkullBuilder owningPlayer(OfflinePlayer player) {
+    @NotNull
+    public SkullBuilder owningPlayer(@NotNull OfflinePlayer player) {
         checkNotNull(player, "player");
         return editMeta(meta -> meta.setOwningPlayer(player));
     }
@@ -99,12 +101,14 @@ public class SkullBuilder extends BaseItemBuilder<@NotNull SkullBuilder, @NotNul
      * @see SkullMeta#setOwner(String)
      */
     @Deprecated
-    public SkullBuilder setOwner(String player) {
+    @NotNull
+    public SkullBuilder setOwner(@NotNull String player) {
         checkNotNull(player, "player");
         return editMeta(meta -> meta.setOwner(player));
     }
 
-    public SkullBuilder setSkullTextures(UUID uuid) {
+    @NotNull
+    public SkullBuilder setSkullTextures(@NotNull UUID uuid) {
         return editMeta(skullMeta -> {
             try {
                 skullMeta.setPlayerProfile(Bukkit.createProfile(uuid).update().get());
@@ -119,7 +123,8 @@ public class SkullBuilder extends BaseItemBuilder<@NotNull SkullBuilder, @NotNul
      * @param url the url
      * @return this instance to make chain calls
      */
-    public SkullBuilder setSkullTextureFromUrl(String url) {
+    @NotNull
+    public SkullBuilder setSkullTextureFromUrl(@NotNull String url) {
         return this.editMeta(meta -> {
             final UUID uuid = UUID.randomUUID();
             final PlayerProfile playerProfile = Bukkit.createProfile(uuid);
@@ -139,7 +144,8 @@ public class SkullBuilder extends BaseItemBuilder<@NotNull SkullBuilder, @NotNul
      * @param texture the {@link Base64} decoded string
      * @return this to make chain calls
      */
-    public SkullBuilder texture(String texture) {
+    @NotNull
+    public SkullBuilder texture(@NotNull String texture) {
         Preconditions.checkNotNull(texture, "texture");
         return getMeta(meta -> {
             final PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID(), "");
@@ -157,20 +163,21 @@ public class SkullBuilder extends BaseItemBuilder<@NotNull SkullBuilder, @NotNul
 
     public boolean isNonValidSkull() {
         return !List.of(
-                Material.CREEPER_HEAD,
-                Material.DRAGON_HEAD,
-                Material.CREEPER_WALL_HEAD,
-                Material.PIGLIN_HEAD,
-                Material.DRAGON_WALL_HEAD,
-                Material.PLAYER_WALL_HEAD,
-                Material.PIGLIN_WALL_HEAD,
-                Material.ZOMBIE_HEAD,
-                Material.ZOMBIE_WALL_HEAD,
-                Material.PLAYER_HEAD
+            Material.CREEPER_HEAD,
+            Material.DRAGON_HEAD,
+            Material.CREEPER_WALL_HEAD,
+            Material.PIGLIN_HEAD,
+            Material.DRAGON_WALL_HEAD,
+            Material.PLAYER_WALL_HEAD,
+            Material.PIGLIN_WALL_HEAD,
+            Material.ZOMBIE_HEAD,
+            Material.ZOMBIE_WALL_HEAD,
+            Material.PLAYER_HEAD
         ).contains(material());
     }
 
-    public String getUrl(String encodedData) {
+    @NotNull
+    public String getUrl(@NotNull String encodedData) {
         checkNotNull(encodedData, "texture");
         String decoded = new String(Base64.getDecoder().decode(encodedData));
         JsonObject object = JsonParser.parseString(decoded).getAsJsonObject();

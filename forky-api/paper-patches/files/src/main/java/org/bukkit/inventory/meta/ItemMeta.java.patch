@@ -16,7 +16,7 @@
      /**
       * Checks for existence of a custom name.
       *
-@@ -63,6 +_,27 @@
+@@ -63,6 +_,26 @@
       */
      void customName(final net.kyori.adventure.text.@Nullable Component customName);
  
@@ -29,7 +29,6 @@
 +     * @param args the arguments
 +     */
 +    void customTranslationName(@NotNull String messageKey, @NotNull Object... args);
-+
 +
 +    /**
 +     * Sets the custom name with translation

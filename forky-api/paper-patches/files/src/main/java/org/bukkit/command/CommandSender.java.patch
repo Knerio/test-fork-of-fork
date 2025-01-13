@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/command/CommandSender.java
 +++ b/src/main/java/org/bukkit/command/CommandSender.java
-@@ -1,16 +_,40 @@
+@@ -1,16 +_,39 @@
  package org.bukkit.command;
  
  import java.util.UUID;
@@ -34,8 +34,7 @@
 +     * @param locale the locale
 +     * @param args the args (<1>, <2>, ...)
 +     */
-+    public void sendTranslatedMessage(@NotNull String key, @NotNull String project, @NotNull Locale locale, @NotNull Object... args);
-+
++    public void sendTranslatedMessage(@NotNull String key, @NotNull String project, @NotNull Object... args);
 +    // Varilx - End
 +
      /**

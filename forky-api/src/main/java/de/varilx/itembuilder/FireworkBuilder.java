@@ -22,18 +22,17 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder, FireworkMe
      * Constructs a new {@link FireworkBuilder} based on an {@link ItemStack}
      * @param itemStack the {@link ItemStack}
      */
-    public FireworkBuilder(ItemStack itemStack) {
+    public FireworkBuilder(@NotNull ItemStack itemStack) {
         super(itemStack);
         if (isNonValidFirework()) throw new IllegalArgumentException("ItemStack is no skull");
     }
-
 
 
     /**
      * Constructs a new {@link FireworkBuilder} based on a {@link Material}
      * @param material the {@link Material}
      */
-    public FireworkBuilder(Material material) {
+    public FireworkBuilder(@NotNull Material material) {
         super(material);
         if (isNonValidFirework()) throw new IllegalArgumentException("ItemStack is no skull");
     }
@@ -43,7 +42,7 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder, FireworkMe
      * @param material the {@link Material}
      * @param amount the amount for the new {@link ItemStack}
      */
-    public FireworkBuilder(Material material, int amount) {
+    public FireworkBuilder(@NotNull Material material, int amount) {
         super(material, amount);
         if (isNonValidFirework()) throw new IllegalArgumentException("ItemStack is no skull");
     }
@@ -54,7 +53,7 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder, FireworkMe
      * @param amount the amount for the new {@link ItemStack}
      * @param meta the meta for the new {@link ItemMeta}
      */
-    public FireworkBuilder(Material material, int amount, ItemMeta meta) {
+    public FireworkBuilder(@NotNull Material material, int amount, @NotNull ItemMeta meta) {
         super(material, amount, meta);
         if (isNonValidFirework()) throw new IllegalArgumentException("ItemStack is no skull");
     }
@@ -65,7 +64,8 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder, FireworkMe
      * @return this to make chain calls
      * @see FireworkEffect.Builder
      */
-    public FireworkBuilder effects(FireworkEffect.Builder @NotNull ... builders) {
+    @NotNull
+    public FireworkBuilder effects(@NotNull FireworkEffect.Builder @NotNull ... builders) {
         for (FireworkEffect.Builder builder : builders) {
             effects(builder.build());
         }
@@ -80,7 +80,8 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder, FireworkMe
      * @see #effects(FireworkEffect.Builder...)
      * @see FireworkMeta#addEffects(FireworkEffect...)
      */
-    public FireworkBuilder effects(FireworkEffect... effects) {
+    @NotNull
+    public FireworkBuilder effects(@NotNull FireworkEffect@NotNull ... effects) {
         return this.effects(Arrays.asList(effects));
     }
 
@@ -91,7 +92,8 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder, FireworkMe
      * @see #effects(FireworkEffect.Builder...)
      * @see FireworkMeta#addEffects(FireworkEffect...)
      */
-    public FireworkBuilder effects(List<FireworkEffect> effects) {
+    @NotNull
+    public FireworkBuilder effects(@NotNull List<FireworkEffect> effects) {
         return editMeta(fireworkMeta -> fireworkMeta.addEffects(effects));
     }
 
@@ -101,6 +103,7 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder, FireworkMe
      * @return this to make chain calls
      * @see FireworkMeta#setPower(int)
      */
+    @NotNull
     public FireworkBuilder power(int power) {
         return editMeta(fireworkMeta -> fireworkMeta.setPower(power));
     }

@@ -11,7 +11,7 @@ public class ItemBuilder extends BaseItemBuilder<@NotNull ItemBuilder, @NotNull 
      * Constructs a new {@link ItemBuilder} based on an {@link ItemStack}
      * @param itemStack the {@link ItemStack}
      */
-    public ItemBuilder(ItemStack itemStack) {
+    public ItemBuilder(@NotNull ItemStack itemStack) {
         super(itemStack);
     }
 
@@ -19,7 +19,7 @@ public class ItemBuilder extends BaseItemBuilder<@NotNull ItemBuilder, @NotNull 
      * Constructs a new {@link ItemBuilder} based on a {@link Material}
      * @param material the {@link Material}
      */
-    public ItemBuilder(Material material) {
+    public ItemBuilder(@NotNull Material material) {
         super(material);
     }
 
@@ -28,7 +28,7 @@ public class ItemBuilder extends BaseItemBuilder<@NotNull ItemBuilder, @NotNull 
      * @param material the {@link Material}
      * @param amount the amount for the new {@link ItemStack}
      */
-    public ItemBuilder(Material material, int amount) {
+    public ItemBuilder(@NotNull Material material, int amount) {
         super(material, amount);
     }
 
@@ -38,7 +38,7 @@ public class ItemBuilder extends BaseItemBuilder<@NotNull ItemBuilder, @NotNull 
      * @param amount the amount for the new {@link ItemStack}
      * @param meta the meta for the new {@link ItemMeta}
      */
-    public ItemBuilder(Material material, int amount, ItemMeta meta) {
+    public ItemBuilder(@NotNull Material material, int amount, @NotNull ItemMeta meta) {
         super(material, amount, meta);
     }
 

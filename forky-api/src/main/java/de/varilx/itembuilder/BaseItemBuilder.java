@@ -33,33 +33,40 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
 
 
     /**
-     * See implementations
+     * Constructs a ItemBuilder based on an itemstack
+     * @param itemStack the itemstack
      */
-    protected BaseItemBuilder(ItemStack itemStack) {
+    protected BaseItemBuilder(@NotNull ItemStack itemStack) {
         checkNotNull(itemStack, "itemStack");
         this.itemStack = itemStack;
     }
 
     /**
-     * See implementations
+     * Constructs an ItemBuilder based on a material
+     * @param material the material
      */
-    protected BaseItemBuilder(Material material) {
+    protected BaseItemBuilder(@NotNull Material material) {
         checkNotNull(material, "material");
         this.itemStack = new ItemStack(material);
     }
 
     /**
-     * See implementations
+     * Constructs an ItemBuilder based on a material and amount
+     * @param material the material
+     * @param amount the amount
      */
-    protected BaseItemBuilder(Material material, int amount) {
+    protected BaseItemBuilder(@NotNull Material material, @NotNull int amount) {
         checkNotNull(material, "material");
         this.itemStack = new ItemStack(material, amount);
     }
 
     /**
-     * See implementations
+     * Constructs an ItemBuilder based on a material, amount and item meta
+     * @param material the material
+     * @param amount the amount
+     * @param meta the meta
      */
-    protected BaseItemBuilder(Material material, int amount, ItemMeta meta) {
+    protected BaseItemBuilder(@NotNull Material material, @NotNull int amount, @NotNull ItemMeta meta) {
         checkNotNull(material, "material");
         checkNotNull(material, "meta");
         this.itemStack = new ItemStack(material, amount);
@@ -71,6 +78,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @param customModelData the data
      * @return this for chain calls
      */
+    @NotNull
     public B setCustomModelData(int customModelData) {
         return this.editMeta(m -> m.setCustomModelData(customModelData));
     }
@@ -83,7 +91,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the builder instance
      * @throws NullPointerException if {@code key} is null
      */
-    public B translatedName(String key, Object... args) {
+    @NotNull
+    public B translatedName(@NotNull String key, @NotNull Object... args) {
         checkNotNull(key, "key");
         return this.editMeta(meta -> meta.customTranslationName(key, args));
     }
@@ -97,7 +106,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the builder instance
      * @throws NullPointerException if {@code key} or {@code project} is null
      */
-    public B translatedName(String key, String project, Object... args) {
+    @NotNull
+    public B translatedName(@NotNull String key, @NotNull String project, @NotNull Object... args) {
         checkNotNull(key, "key");
         checkNotNull(project, "project");
         return this.editMeta(meta -> meta.customTranslationName(key, project, Locale.DE, args));
@@ -113,7 +123,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the builder instance
      * @throws NullPointerException if {@code key}, {@code project}, or {@code locale} is null
      */
-    public B translatedName(String key, String project, Locale locale, Object... args) {
+    @NotNull
+    public B translatedName(@NotNull String key, @NotNull String project, @NotNull Locale locale, @NotNull Object... args) {
         checkNotNull(key, "key");
         checkNotNull(project, "project");
         checkNotNull(locale, "locale");
@@ -125,6 +136,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      *
      * @return the translated display name as a {@link Component}
      */
+    @NotNull
     public Component translatedName() {
         return get(ItemMeta::displayName);
     }
@@ -137,7 +149,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the builder instance
      * @throws NullPointerException if {@code key} is null
      */
-    public B translatedLore(String key, Object... args) {
+    @NotNull
+    public B translatedLore(@NotNull String key, @NotNull Object... args) {
         checkNotNull(key, "key");
         return editMeta(meta -> {
             if (meta.lore() == null) meta.lore(new ArrayList<>());
@@ -154,7 +167,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the builder instance
      * @throws NullPointerException if {@code key} or {@code project} is null
      */
-    public B translatedLore(String key, String project, Object... args) {
+    @NotNull
+    public B translatedLore(@NotNull String key, @NotNull String project, @NotNull Object... args) {
         checkNotNull(key, "key");
         checkNotNull(project, "project");
         return this.translatedLore(key, project, Locale.DE, args);
@@ -170,7 +184,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the builder instance
      * @throws NullPointerException if {@code key}, {@code project}, or {@code locale} is null
      */
-    public B translatedLore(String key, String project, Locale locale, Object... args) {
+    @NotNull
+    public B translatedLore(@NotNull String key, @NotNull String project, @NotNull Locale locale, @NotNull Object... args) {
         checkNotNull(key, "key");
         checkNotNull(project, "project");
         checkNotNull(locale, "locale");
@@ -189,7 +204,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the builder instance, unchanged if the condition is false
      * @throws NullPointerException if {@code supplier} or {@code key} is null
      */
-    public B translatedLoreIf(@NotNull Supplier<Boolean> supplier, String key, Object... args) {
+    @NotNull
+    public B translatedLoreIf(@NotNull Supplier<Boolean> supplier, @NotNull String key, @NotNull Object... args) {
         checkNotNull(supplier, "supplier");
         checkNotNull(key, "key");
         if (!supplier.get()) return (B) this;
@@ -206,7 +222,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the builder instance, unchanged if the condition is false
      * @throws NullPointerException if {@code supplier}, {@code key}, or {@code project} is null
      */
-    public B translatedLoreIf(@NotNull Supplier<Boolean> supplier, String key, String project, Object... args) {
+    @NotNull
+    public B translatedLoreIf(@NotNull Supplier<Boolean> supplier, @NotNull String key, @NotNull String project, @NotNull Object... args) {
         checkNotNull(supplier, "supplier");
         checkNotNull(key, "key");
         checkNotNull(project, "project");
@@ -225,7 +242,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the builder instance, unchanged if the condition is false
      * @throws NullPointerException if {@code supplier}, {@code key}, {@code project}, or {@code locale} is null
      */
-    public B translatedLoreIf(@NotNull Supplier<Boolean> supplier, String key, String project, Locale locale, Object... args) {
+    @NotNull
+    public B translatedLoreIf(@NotNull Supplier<Boolean> supplier, @NotNull String key, @NotNull String project, @NotNull Locale locale, @NotNull Object... args) {
         checkNotNull(supplier, "supplier");
         checkNotNull(key, "key");
         checkNotNull(project, "project");
@@ -242,7 +260,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the builder instance
      * @throws NullPointerException if {@code key} is null
      */
-    public B addTranslatedLore(String key, Object... args) {
+    @NotNull
+    public B addTranslatedLore(@NotNull String key, @NotNull Object... args) {
         checkNotNull(key, "key");
         return editMeta(m -> {
             List<Component> lore = m.lore();
@@ -261,7 +280,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the builder instance
      * @throws NullPointerException if {@code key} or {@code project} is null
      */
-    public B addTranslatedLore(String key, String project, Object... args) {
+    @NotNull
+    public B addTranslatedLore(@NotNull String key, @NotNull String project, @NotNull Object... args) {
         checkNotNull(key, "key");
         checkNotNull(project, "project");
         return addTranslatedLore(key, project, Locale.DE, args);
@@ -279,7 +299,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the updated builder instance
      * @throws NullPointerException if key, project, or locale is null
      */
-    public B addTranslatedLore(String key, String project, Locale locale, Object... args) {
+    @NotNull
+    public B addTranslatedLore(@NotNull String key, @NotNull String project, @NotNull Locale locale, @NotNull Object... args) {
         checkNotNull(key, "key");
         checkNotNull(project, "project");
         checkNotNull(locale, "locale");
@@ -295,6 +316,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * Removes the last lore line
      * @return this to make chain calls
      */
+    @NotNull
     public B removeLastLore() {
         return this.editMeta(meta -> {
             List<Component> lore = meta.lore();
@@ -313,7 +335,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see #name(Component)
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B displayname(Component displayname) {
+    @NotNull
+    public B displayname(@NotNull Component displayname) {
         checkNotNull(displayname, "displayname");
         return name(displayname);
     }
@@ -323,6 +346,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return the displayname
      */
     @ApiStatus.Obsolete(since = "1.12.4")
+    @NotNull
     public Component displayname() {
         return name();
     }
@@ -335,7 +359,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see #displayname(Component)
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B name(Component name) {
+    @NotNull
+    public B name(@NotNull Component name) {
         checkNotNull(name, "name");
         return this.editMeta(meta -> meta.displayName(name));
     }
@@ -348,7 +373,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see #displayname(Component)
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B name(Supplier<Component> name) {
+    @NotNull
+    public B name(@NotNull Supplier<Component> name) {
         checkNotNull(name, "name");
         return this.editMeta(meta -> meta.displayName(name.get()));
     }
@@ -359,6 +385,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see ItemMeta#displayName()
      */
     @ApiStatus.Obsolete(since = "1.12.4")
+    @NotNull
     public Component name() {
         return get(ItemMeta::displayName);
     }
@@ -369,7 +396,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return this to make chain calls
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B lore(Component... lore) {
+    @NotNull
+    public B lore(@NotNull Component... lore) {
         checkNotNull(lore, "lore");
         return this.lore(Arrays.asList(lore));
     }
@@ -380,7 +408,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return this to make chain calls
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B lore(List<Component> lore) {
+    @NotNull
+    public B lore(@NotNull List<Component> lore) {
         checkNotNull(lore, "lore");
         return editMeta(meta -> {
             if (meta.lore() == null) meta.lore(new ArrayList<>());
@@ -394,6 +423,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return this to make chain calls
      */
     @ApiStatus.Obsolete(since = "1.12.4")
+    @NotNull
     public B lore(@NotNull Supplier<List<Component>> lore) {
         checkNotNull(lore, "lore");
         return lore(lore.get());
@@ -407,7 +437,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see #lore(Supplier)
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B loreIf(@NotNull Supplier<Boolean> supplier, Supplier<List<Component>> toAdd) {
+    @NotNull
+    public B loreIf(@NotNull Supplier<Boolean> supplier, @NotNull Supplier<List<Component>> toAdd) {
         checkNotNull(supplier, "supplier");
         checkNotNull(toAdd, "lore");
         if (!supplier.get()) return (B) this;
@@ -422,7 +453,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see #lore(List)
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B loreIf(@NotNull Supplier<Boolean> supplier, List<Component> toAdd) {
+    @NotNull
+    public B loreIf(@NotNull Supplier<Boolean> supplier, @NotNull List<Component> toAdd) {
         checkNotNull(supplier, "supplier");
         checkNotNull(toAdd, "lore");
         if (!supplier.get()) return (B) this;
@@ -437,7 +469,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see #lore(Component...)
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B loreIf(@NotNull Supplier<Boolean> supplier, Component... toAdd) {
+    @NotNull
+    public B loreIf(@NotNull Supplier<Boolean> supplier, @NotNull Component... toAdd) {
         checkNotNull(supplier, "supplier");
         checkNotNull(toAdd, "lore");
         if (!supplier.get()) return (B) this;
@@ -452,7 +485,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see #addLore(Supplier)
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B addLoreIf(@NotNull Supplier<Boolean> supplier, Supplier<List<Component>> toAdd) {
+    @NotNull
+    public B addLoreIf(@NotNull Supplier<Boolean> supplier, @NotNull Supplier<List<Component>> toAdd) {
         checkNotNull(supplier, "supplier");
         checkNotNull(toAdd, "lore");
         if (!supplier.get()) return (B) this;
@@ -467,7 +501,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see #addLore(List)
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B addLoreIf(@NotNull Supplier<Boolean> supplier, List<Component> toAdd) {
+    @NotNull
+    public B addLoreIf(@NotNull Supplier<Boolean> supplier, @NotNull List<Component> toAdd) {
         checkNotNull(supplier, "supplier");
         checkNotNull(toAdd, "lore");
         if (!supplier.get()) return (B) this;
@@ -482,7 +517,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see #addLore(Component...)
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B addLoreIf(@NotNull Supplier<Boolean> supplier, Component... toAdd) {
+    @NotNull
+    public B addLoreIf(@NotNull Supplier<Boolean> supplier, @NotNull Component... toAdd) {
         checkNotNull(supplier, "supplier");
         checkNotNull(toAdd, "lore");
         if (!supplier.get()) return (B) this;
@@ -495,6 +531,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return this to make chain calls
      */
     @ApiStatus.Obsolete(since = "1.12.4")
+    @NotNull
     public B addLore(@NotNull Supplier<List<Component>> lore) {
         checkNotNull(lore, "lore");
         return addLore(lore.get());
@@ -506,7 +543,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return this to make chain calls
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B addLore(List<Component> toAdd) {
+    @NotNull
+    public B addLore(@NotNull List<Component> toAdd) {
         checkNotNull(toAdd, "lore");
         return editMeta(m -> {
             List<Component> lore = m.lore();
@@ -522,7 +560,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return this to make chain calls
      */
     @ApiStatus.Obsolete(since = "1.12.4")
-    public B addLore(Component... toAdd) {
+    @NotNull
+    public B addLore(@NotNull Component... toAdd) {
         checkNotNull(toAdd, "lore");
         return addLore(Arrays.asList(toAdd));
     }
@@ -533,7 +572,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @param flags the flags to remove
      * @return this to make chain calls
      */
-    public B removeFlags(ItemFlag... flags) {
+    @NotNull
+    public B removeFlags(@NotNull ItemFlag... flags) {
         checkNotNull(flags, "flags");
         return editMeta(m -> {
             m.removeItemFlags(flags);
@@ -545,6 +585,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @param flags the flags to remove
      * @return this to make chain calls
      */
+    @NotNull
     public B removeFlags(@NotNull List<ItemFlag> flags) {
         checkNotNull(flags, "flags");
         return removeFlags(flags.toArray(new ItemFlag[]{}));
@@ -555,7 +596,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @param flags the {@link ItemFlag}s
      * @return this to make chain calls
      */
-    public B flags(ItemFlag... flags) {
+    @NotNull
+    public B flags(@NotNull ItemFlag... flags) {
         checkNotNull(flags, "flags");
         return editMeta(m -> {
             m.addItemFlags(flags);
@@ -567,6 +609,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @param flags the {@link ItemFlag}s
      * @return this to make chain calls
      */
+    @NotNull
     public B flags(@NotNull List<ItemFlag> flags) {
         checkNotNull(flags, "flags");
         return flags(flags.toArray(new ItemFlag[]{}));
@@ -576,6 +619,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * Clears <b>all</b> {@link ItemFlag}s from the {@link ItemStack}
      * @return this to make chain calls
      */
+    @NotNull
     public B clearFlags() {
         return editMeta(m -> {
             m.removeItemFlags(ItemFlag.values());
@@ -587,6 +631,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return this to make chain calls
      * @see #glow(boolean)
      */
+    @NotNull
     public B glow() {
         return glow(true);
     }
@@ -596,6 +641,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return this to make chain calls
      * @see #glow()
      */
+    @NotNull
     public B glow(boolean glow) {
         return editMeta(m -> {
             if (glow) {
@@ -616,7 +662,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see Enchantment
      * @see ItemMeta#addEnchant(Enchantment, int, boolean)
      */
-    public B enchant(Enchantment enchantment) {
+    @NotNull
+    public B enchant(@NotNull Enchantment enchantment) {
         checkNotNull(enchantment, "enchantment");
         return editMeta(m -> m.addEnchant(enchantment, 1, false));
     }
@@ -630,7 +677,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see Enchantment
      * @see ItemMeta#addEnchant(Enchantment, int, boolean)
      */
-    public B enchant(Enchantment enchantment, int level) {
+    @NotNull
+    public B enchant(@NotNull Enchantment enchantment, int level) {
         checkNotNull(enchantment, "enchantment");
         return editMeta(m -> m.addEnchant(enchantment, level, false));
     }
@@ -645,7 +693,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @see Enchantment
      * @see ItemMeta#addEnchant(Enchantment, int, boolean)
      */
-    public B enchant(Enchantment enchantment, int level, boolean restrictions) {
+    @NotNull
+    public B enchant(@NotNull Enchantment enchantment, int level, boolean restrictions) {
         checkNotNull(enchantment, "enchantment");
         return editMeta(m -> m.addEnchant(enchantment, level, restrictions));
     }
@@ -655,6 +704,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return this to make chain calls
      * @see #disenchant(Enchantment)
      */
+    @NotNull
     public B disenchant() {
         return getMeta(m -> m.getEnchants().forEach((enchantment, integer) -> disenchant(enchantment)));
     }
@@ -664,7 +714,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @param type the {@link Enchantment} to remove
      * @return this to make chain calls
      */
-    public B disenchant(Enchantment type) {
+    @NotNull
+    public B disenchant(@NotNull Enchantment type) {
         checkNotNull(type, "enchantment");
         return editMeta(m -> m.removeEnchant(type));
     }
@@ -674,6 +725,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return True -> item is unbreakable, false -> its not
      * @see ItemMeta#setUnbreakable(boolean)
      */
+    @NotNull
     public boolean isUnbreakable() {
         return get(ItemMeta::isUnbreakable);
     }
@@ -682,6 +734,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * Makes the item unbreakable
      * @return this to make chain calls
      */
+    @NotNull
     public B unbreakable() {
         return unbreakable(true);
     }
@@ -691,6 +744,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @param unbreakable whether the item should be unbreakable or not
      * @return this to make chain calls
      */
+    @NotNull
     public B unbreakable(boolean unbreakable) {
         return editMeta(m -> m.setUnbreakable(unbreakable));
     }
@@ -700,6 +754,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @param amount the amount
      * @return this to make chain calls
      */
+    @NotNull
     public B amount(int amount) {
         this.itemStack.setAmount(amount);
         return (B) this;
@@ -713,7 +768,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * @return this t make chain calls
      * @see #loreIf(Supplier, Component...)
      */
-    public B doIf(Supplier<Boolean> bool, Consumer<B> action) {
+    @NotNull
+    public B doIf(@NotNull Supplier<Boolean> bool, @NotNull Consumer<B> action) {
         checkNotNull(bool, "supplier");
         checkNotNull(action, "action");
         if (!bool.get()) return (B) this;
@@ -725,11 +781,18 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
      * Gets the {@link Material} of the current {@link ItemStack}
      * @return the {@link Material}
      */
+    @NotNull
     public Material material() {
         return this.itemStack.getType();
     }
 
 
+    /**
+     * Edits the meta
+     * @param consumer the consumer to edit
+     * @return this to make chain calls
+     */
+    @NotNull
     protected B editMeta(@NotNull Consumer<M> consumer) {
         checkNotNull(consumer, "edit item meta consumer");
         M meta = meta();
@@ -738,6 +801,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
         return (B) this;
     }
 
+    /**
+     * The same as {@code BaseItemBuilder#editMeta} but it doesnt save it
+     * @param consumer the consumer to get
+     * @return this to make chain calls
+     * @see #editMeta(Consumer)
+     */
+    @NotNull
     protected B getMeta(@NotNull Consumer<M> consumer) {
         checkNotNull(consumer, "get item meta consumer");
         consumer.accept(meta());
@@ -753,11 +823,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B, M>, M extends
         return (M) (itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType()));
     }
 
+    @NotNull
     public ItemStack build() {
         return this.itemStack;
     }
 
     @Override
+    @NotNull
     public ItemBuilder clone() {
         return new ItemBuilder(this.itemStack.clone());
     }
