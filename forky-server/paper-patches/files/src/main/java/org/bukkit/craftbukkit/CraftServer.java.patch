@@ -109,25 +109,25 @@
 +    }
 +
 +    @Override
-+    public void showTranslatedBossbar(final String bossbarKey, final Objects... args) {
++    public void showTranslatedBossbar(final String bossbarKey, final Object... args) {
 +        net.kyori.adventure.text.Component title = Bukkit.getVarilxCommon().getTranslationService().getDefaultComponent(bossbarKey, (Object[]) args);
 +        this.showBossBar(net.kyori.adventure.bossbar.BossBar.bossBar(title, 0f, net.kyori.adventure.bossbar.BossBar.Color.GREEN, net.kyori.adventure.bossbar.BossBar.Overlay.PROGRESS));
 +    }
 +
 +    @Override
-+    public void showTranslatedBossbar(final String bossbarKey, final net.kyori.adventure.bossbar.BossBar bossBar, final Objects... args) {
++    public void showTranslatedBossbar(final String bossbarKey, final net.kyori.adventure.bossbar.BossBar bossBar, final Object... args) {
 +        net.kyori.adventure.text.Component title = Bukkit.getVarilxCommon().getTranslationService().getDefaultComponent(bossbarKey, (Object[]) args);
 +        bossBar.name(title);
 +        this.showBossBar(bossBar);
 +    }
 +
 +    @Override
-+    public void showTranslatedBossbar(final String bossbarKey, final String project, final net.kyori.adventure.bossbar.BossBar bossBar, final Objects... args) {
++    public void showTranslatedBossbar(final String bossbarKey, final String project, final net.kyori.adventure.bossbar.BossBar bossBar, final Object... args) {
 +        this.showTranslatedBossbar(bossbarKey, project, de.varilx.core.common.translation.Locale.DE, bossBar, args);
 +    }
 +
 +    @Override
-+    public void showTranslatedBossbar(final String bossbarKey, final String project, final de.varilx.core.common.translation.Locale locale, final net.kyori.adventure.bossbar.BossBar bossBar, final Objects... args) {
++    public void showTranslatedBossbar(final String bossbarKey, final String project, final de.varilx.core.common.translation.Locale locale, final net.kyori.adventure.bossbar.BossBar bossBar, final Object... args) {
 +        net.kyori.adventure.text.Component title = Bukkit.getVarilxCommon().getTranslationService().getComponent(bossbarKey, project, locale, (Object[]) args);
 +        bossBar.name(title);
 +        this.showBossBar(bossBar);

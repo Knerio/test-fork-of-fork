@@ -9,7 +9,7 @@
  import org.bukkit.Warning.WarningState;
  import org.bukkit.advancement.Advancement;
  import org.bukkit.block.data.BlockData;
-@@ -126,6 +_,13 @@
+@@ -125,6 +_,13 @@
          // Paper end
      }
  
@@ -23,7 +23,7 @@
      /**
       * Gets the name of this server implementation.
       *
-@@ -1453,6 +_,39 @@
+@@ -1452,6 +_,39 @@
          server.shutdown();
      }
  
