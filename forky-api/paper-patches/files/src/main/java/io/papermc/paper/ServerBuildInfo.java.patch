@@ -1,18 +1,16 @@
 --- a/src/main/java/io/papermc/paper/ServerBuildInfo.java
 +++ b/src/main/java/io/papermc/paper/ServerBuildInfo.java
-@@ -19,12 +_,13 @@
+@@ -25,6 +_,14 @@
       */
-     Key BRAND_PAPER_ID = Key.key("papermc", "paper");
- 
--    // Purpur start
-+    // Purpur start // Varilx start - Rebrand
-     /**
-      * The brand id for Purpur.
-      */
--    Key BRAND_PURPUR_ID = Key.key("purpurmc", "purpur");
--    // Purpur end
-+    Key BRAND_PURPUR_ID = Key.key("vaxspigot", "vaxspigot");
-+    // Purpur end // Varilx end - Rebrand
+     Key BRAND_PURPUR_ID = Key.key("purpurmc", "purpur");
+     // Purpur end
++
++    // Varilx start
++    /**
++     * The brand id for varilx.
++     */
++    Key BRAND_VARILX_ID = Key.key("vaxspigot", "vaxspigot");
++    // Varilx end
 +
      /**
       * Gets the {@code ServerBuildInfo}.
