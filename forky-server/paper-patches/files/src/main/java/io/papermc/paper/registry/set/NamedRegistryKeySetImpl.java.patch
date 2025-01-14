@@ -1,0 +1,13 @@
+--- a/src/main/java/io/papermc/paper/registry/set/NamedRegistryKeySetImpl.java
++++ b/src/main/java/io/papermc/paper/registry/set/NamedRegistryKeySetImpl.java
+@@ -26,10 +_,6 @@
+     HolderSet.Named<M> namedSet
+ ) implements Tag<T>, org.bukkit.Tag<T> {
+ 
+-    public NamedRegistryKeySetImpl(final HolderSet.Named<M> namedSet) {
+-        this(PaperRegistries.fromNms(namedSet.key()), namedSet);
+-    }
+-
+     @Override
+     public @Unmodifiable Collection<TypedKey<T>> values() {
+         final ImmutableList.Builder<TypedKey<T>> builder = ImmutableList.builder();

@@ -1,0 +1,38 @@
+--- a/src/test/java/io/papermc/paper/registry/RegistryBuilderTest.java
++++ b/src/test/java/io/papermc/paper/registry/RegistryBuilderTest.java
+@@ -2,7 +_,8 @@
+ 
+ import io.papermc.paper.registry.data.util.Conversions;
+ import io.papermc.paper.registry.entry.RegistryEntry;
+-import io.papermc.paper.registry.entry.RegistryEntryMeta;
++import io.papermc.paper.registry.entry.RegistryEntryInfo;
++import io.papermc.paper.registry.legacy.DelayedRegistryEntry;
+ import java.util.Map;
+ import java.util.stream.Stream;
+ import net.minecraft.core.Registry;
+@@ -22,17 +_,21 @@
+ 
+     static Stream<Arguments> registries() {
+         return PaperRegistries.REGISTRY_ENTRIES.stream()
+-            .map(RegistryEntry::meta)
+-            .filter(RegistryEntryMeta.Buildable.class::isInstance)
++            .map(RegistryBuilderTest::possiblyUnwrap)
++            .filter(RegistryEntry.BuilderHolder.class::isInstance)
+             .map(Arguments::arguments);
+     }
+ 
++    private static <M, B extends Keyed> RegistryEntryInfo<M, B> possiblyUnwrap(final RegistryEntryInfo<M, B> entry) {
++        return entry instanceof final DelayedRegistryEntry<M, B> delayed ? delayed.delegate() : entry;
++    }
++
+     @ParameterizedTest
+     @MethodSource("registries")
+-    <M, T extends Keyed> void testEquality(final RegistryEntryMeta.Buildable<M, T, ?> registryEntry) { // TODO remove Keyed
++    <M, T> void testEquality(final RegistryEntry.BuilderHolder<M, T, ?> registryEntry) {
+         final Registry<M> registry = RegistryHelper.getRegistry().lookupOrThrow(registryEntry.mcKey());
+         for (final Map.Entry<ResourceKey<M>, M> entry : registry.entrySet()) {
+-            final M built = registryEntry.builderFiller().fill(new Conversions(new RegistryOps.HolderLookupAdapter(RegistryHelper.getRegistry())), entry.getValue()).build();
++            final M built = registryEntry.fillBuilder(new Conversions(new RegistryOps.HolderLookupAdapter(RegistryHelper.getRegistry())), entry.getValue()).build();
+             assertEquals(entry.getValue(), built);
+         }
+     }

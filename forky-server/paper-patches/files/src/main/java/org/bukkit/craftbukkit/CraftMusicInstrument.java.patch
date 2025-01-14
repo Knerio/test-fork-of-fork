@@ -1,0 +1,69 @@
+--- a/src/main/java/org/bukkit/craftbukkit/CraftMusicInstrument.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftMusicInstrument.java
+@@ -1,24 +_,23 @@
+ package org.bukkit.craftbukkit;
+ 
+ import com.google.common.base.Preconditions;
+-import io.papermc.paper.registry.RegistryKey;
+-import io.papermc.paper.util.Holderable;
+ import net.minecraft.core.Holder;
+ import net.minecraft.core.registries.Registries;
+ import net.minecraft.world.item.Instrument;
+ import org.bukkit.MusicInstrument;
+ import org.bukkit.NamespacedKey;
+ import org.bukkit.Registry;
++import org.bukkit.craftbukkit.util.Handleable;
+ import org.jetbrains.annotations.NotNull;
+ 
+ public class CraftMusicInstrument extends MusicInstrument implements io.papermc.paper.util.Holderable<Instrument> {
+ 
+     public static MusicInstrument minecraftToBukkit(Instrument minecraft) {
+-        return CraftRegistry.minecraftToBukkit(minecraft, Registries.INSTRUMENT);
++        return CraftRegistry.minecraftToBukkit(minecraft, Registries.INSTRUMENT, Registry.INSTRUMENT);
+     }
+ 
+     public static MusicInstrument minecraftHolderToBukkit(Holder<Instrument> minecraft) {
+-        return CraftRegistry.minecraftHolderToBukkit(minecraft, Registries.INSTRUMENT); // Paper - switch to Holder
++        return CraftRegistry.minecraftHolderToBukkit(minecraft, Registry.INSTRUMENT); // Paper - switch to Holder
+     }
+ 
+     public static Instrument bukkitToMinecraft(MusicInstrument bukkit) {
+@@ -32,14 +_,17 @@
+     public static Object bukkitToString(MusicInstrument bukkit) { // Paper - switch to Holder
+         Preconditions.checkArgument(bukkit != null);
+ 
+-        return ((CraftMusicInstrument) bukkit).toBukkitSerializationObject(Instrument.DIRECT_CODEC); // Paper - switch to Holder
++        return ((CraftMusicInstrument) bukkit).toBukkitSerializationObject(Instrument.CODEC); // Paper - switch to Holder
+     }
+ 
+     public static MusicInstrument stringToBukkit(Object string) { // Paper - switch to Holder
+         Preconditions.checkArgument(string != null);
+ 
+-        return io.papermc.paper.util.Holderable.fromBukkitSerializationObject(string, Instrument.CODEC, RegistryKey.INSTRUMENT); // Paper - switch to Holder
++        return io.papermc.paper.util.Holderable.fromBukkitSerializationObject(string, Instrument.CODEC, Registry.INSTRUMENT); // Paper - switch to Holder
+     }
++
++    private final NamespacedKey key;
++    private final Instrument handle;
+ 
+     // Paper start - switch to Holder
+     @Override
+@@ -60,6 +_,8 @@
+     private final Holder<Instrument> holder;
+     public CraftMusicInstrument(Holder<Instrument> holder) {
+         this.holder = holder;
++        this.key = holder.unwrapKey().map(io.papermc.paper.util.MCUtil::fromResourceKey).orElse(null);
++        this.handle = holder.value();
+         // Paper end - switch to Holder
+     }
+ 
+@@ -71,7 +_,8 @@
+     @NotNull
+     @Override
+     public NamespacedKey getKey() {
+-        return Holderable.super.getKey();
++        if (true) return java.util.Objects.requireNonNull(org.bukkit.Registry.INSTRUMENT.getKey(this), () -> this + " doesn't have a key"); // Paper
++        return this.key;
+     }
+ 
+     // Paper start - add translationKey methods

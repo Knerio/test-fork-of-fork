@@ -15,11 +15,13 @@ paperweight {
             path = "purpur-server/build.gradle.kts"
             outputFile = file("forky-server/build.gradle.kts")
             patchFile = file("forky-server/build.gradle.kts.patch")
+            rejectsFile = file("forky-server/rejects")
         }
         patchFile {
             path = "purpur-api/build.gradle.kts"
             outputFile = file("forky-api/build.gradle.kts")
             patchFile = file("forky-api/build.gradle.kts.patch")
+            rejectsFile = file("forky-api/rejects")
         }
         patchRepo("paperApi") {
             upstreamPath = "paper-api"

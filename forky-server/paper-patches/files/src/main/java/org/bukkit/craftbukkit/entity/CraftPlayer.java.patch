@@ -1,14 +1,17 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -5,6 +_,7 @@
+@@ -5,9 +_,9 @@
  import com.google.common.io.BaseEncoding;
  import com.mojang.authlib.GameProfile;
  import com.mojang.datafixers.util.Pair;
 +import de.varilx.core.common.translation.Locale;
  import io.netty.buffer.Unpooled;
  import io.papermc.paper.FeatureHooks;
+-import io.papermc.paper.entity.LookAnchor;
  import it.unimi.dsi.fastutil.shorts.ShortArraySet;
-@@ -37,6 +_,8 @@
+ import it.unimi.dsi.fastutil.shorts.ShortSet;
+ import java.io.ByteArrayOutputStream;
+@@ -38,6 +_,8 @@
  import java.util.logging.Logger;
  import java.util.stream.Collectors;
  import javax.annotation.Nullable;
@@ -17,7 +20,7 @@
  import net.minecraft.advancements.AdvancementProgress;
  import net.minecraft.core.BlockPos;
  import net.minecraft.core.Holder;
-@@ -196,6 +_,7 @@
+@@ -197,6 +_,7 @@
  import org.bukkit.profile.PlayerProfile;
  import org.bukkit.scoreboard.Scoreboard;
  import org.jetbrains.annotations.NotNull;
@@ -25,7 +28,7 @@
  
  import net.md_5.bungee.api.chat.BaseComponent; // Spigot
  
-@@ -219,6 +_,33 @@
+@@ -220,6 +_,33 @@
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime; // Paper - getLastPlayed replacement API
  
@@ -59,7 +62,56 @@
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
  
-@@ -3272,6 +_,47 @@
+@@ -1383,10 +_,29 @@
+     }
+ 
+     @Override
+-    public void lookAt(@NotNull org.bukkit.entity.Entity entity, @NotNull LookAnchor playerAnchor, @NotNull LookAnchor entityAnchor) {
++    public void lookAt(@NotNull org.bukkit.entity.Entity entity, @NotNull io.papermc.paper.entity.LookAnchor playerAnchor, @NotNull io.papermc.paper.entity.LookAnchor entityAnchor) {
+         this.getHandle().lookAt(toNmsAnchor(playerAnchor), ((CraftEntity) entity).getHandle(), toNmsAnchor(entityAnchor));
+     }
+ 
++    @Override
++    public void lookAt(double x, double y, double z, @NotNull io.papermc.paper.entity.LookAnchor playerAnchor) {
++        this.getHandle().lookAt(toNmsAnchor(playerAnchor), new net.minecraft.world.phys.Vec3(x, y, z));
++    }
++
++    public static net.minecraft.commands.arguments.EntityAnchorArgument.Anchor toNmsAnchor(io.papermc.paper.entity.LookAnchor nmsAnchor) {
++        return switch (nmsAnchor) {
++            case EYES -> net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES;
++            case FEET -> net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.FEET;
++        };
++    }
++
++    public static io.papermc.paper.entity.LookAnchor toApiAnchor(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor playerAnchor) {
++        return switch (playerAnchor) {
++            case EYES -> io.papermc.paper.entity.LookAnchor.EYES;
++            case FEET -> io.papermc.paper.entity.LookAnchor.FEET;
++        };
++    }
++
+     public static net.minecraft.world.entity.Relative deltaRelativeToNMS(io.papermc.paper.entity.TeleportFlag.Relative apiFlag) {
+         return switch (apiFlag) {
+             case VELOCITY_X -> net.minecraft.world.entity.Relative.DELTA_X;
+@@ -1885,7 +_,7 @@
+                 handle.serverLevel(), itemstack, amount
+             );
+             int i = Math.min(possibleDurabilityFromXp, itemstack.getDamageValue());
+-            final int consumedExperience = i > 0 ? i * amount / possibleDurabilityFromXp : possibleDurabilityFromXp; // Paper - taken from ExperienceOrb#repairPlayerItems + prevent division by 0
++            final int consumedExperience = i * amount / possibleDurabilityFromXp; // Paper - taken from ExperienceOrb#repairPlayerItems
+             org.bukkit.event.player.PlayerItemMendEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerItemMendEvent(handle, orb, itemstack, stackEntry.get().inSlot(), i, consumedExperience);
+             i = event.getRepairAmount();
+             orb.discard(org.bukkit.event.entity.EntityRemoveEvent.Cause.DESPAWN);
+@@ -3012,7 +_,7 @@
+ 
+     @Override
+     public <T> void spawnParticle(Particle particle, double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, double extra, T data, boolean force) {
+-        ClientboundLevelParticlesPacket packetplayoutworldparticles = new ClientboundLevelParticlesPacket(CraftParticle.createParticleParam(particle, data), force, false, x, y, z, (float) offsetX, (float) offsetY, (float) offsetZ, (float) extra, count); // Paper - fix x/y/z precision loss
++        ClientboundLevelParticlesPacket packetplayoutworldparticles = new ClientboundLevelParticlesPacket(CraftParticle.createParticleParam(particle, data), false, force, x, y, z, (float) offsetX, (float) offsetY, (float) offsetZ, (float) extra, count); // Paper - fix x/y/z precision loss
+         this.getHandle().connection.send(packetplayoutworldparticles);
+     }
+ 
+@@ -3254,6 +_,47 @@
      // resetTitle implemented above
  
      private @Nullable Set<net.kyori.adventure.bossbar.BossBar> activeBossBars;

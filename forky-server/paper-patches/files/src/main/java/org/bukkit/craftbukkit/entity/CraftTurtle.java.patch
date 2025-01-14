@@ -1,0 +1,24 @@
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftTurtle.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftTurtle.java
+@@ -29,6 +_,7 @@
+         return this.getHandle().isLayingEgg();
+     }
+ 
++    // Paper start
+     @Override
+     public org.bukkit.Location getHome() {
+         return io.papermc.paper.util.MCUtil.toLocation(this.getHandle().level(), this.getHandle().getHomePos());
+@@ -45,7 +_,13 @@
+     }
+ 
+     @Override
++    public boolean isDigging() {
++        return this.getHandle().isLayingEgg();
++    }
++
++    @Override
+     public void setHasEgg(boolean hasEgg) {
+         this.getHandle().setHasEgg(hasEgg);
+     }
++    // Paper end
+ }

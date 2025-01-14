@@ -1,6 +1,6 @@
 --- a/purpur-server/build.gradle.kts
 +++ b/purpur-server/build.gradle.kts
-@@ -21,6 +_,7 @@
+@@ -22,6 +_,7 @@
      // gitFilePatches = true
  
      val purpur = forks.register("purpur") {
@@ -8,17 +8,19 @@
          upstream.patchDir("paperServer") {
              upstreamPath = "paper-server"
              excludes = setOf("src/minecraft", "patches", "build.gradle.kts")
-@@ -29,7 +_,28 @@
+@@ -29,7 +_,32 @@
+             outputDir = rootDirectory.dir("paper-server")
          }
      }
- 
 -    activeFork = purpur
++
 +    val forky = forks.register("forky") {
 +        forks = purpur
 +        upstream.patchRepo("paperServer") {
 +            upstreamRepo = purpur.patchedRepo("paperServer")
 +            patchesDir = rootDirectory.dir("forky-server/paper-patches")
 +            outputDir = rootDirectory.dir("paper-server")
++
 +        }
 +        upstream.patchDir("purpurServer") {
 +            upstreamPath = "purpur-server"
@@ -33,6 +35,8 @@
 +            outputDir = rootDirectory.dir("purpur-server")
 +        }
 +    }
++
++
 +
 +    activeFork = forky
  
@@ -60,17 +64,9 @@
 +        resources { srcDir("../purpur-server/src/main/resources") }
      }
  }
- val log4jPlugins = sourceSets.create("log4jPlugins") {
-@@ -135,6 +_,7 @@
  
- // Paper start - configure mockito agent that is needed in newer java versions
- val mockitoAgent = configurations.register("mockitoAgent")
-+
- abstract class MockitoAgentProvider : CommandLineArgumentProvider {
-     @get:CompileClasspath
-     abstract val fileCollection: ConfigurableFileCollection
 @@ -146,7 +_,11 @@
- // Paper end - configure mockito agent that is needed in newer java versions
+ }
  
  dependencies {
 -    implementation(project(":purpur-api"))
@@ -79,17 +75,6 @@
 +    // Varilx end
 +
 +    implementation(project(":forky-api"))
-     implementation("ca.spottedleaf:concurrentutil:0.0.2") // Paper - Add ConcurrentUtil dependency
-     // Paper start
+     implementation("ca.spottedleaf:concurrentutil:0.0.3")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
-@@ -191,7 +_,9 @@
-     testImplementation("org.junit.platform:junit-platform-suite-engine:1.10.0")
-     testImplementation("org.hamcrest:hamcrest:2.2")
-     testImplementation("org.mockito:mockito-core:5.14.1")
--    mockitoAgent("org.mockito:mockito-core:5.14.1") { isTransitive = false } // Paper - configure mockito agent that is needed in newer java versions
-+    mockitoAgent("org.mockito:mockito-core:5.14.1") {
-+        isTransitive = false
-+    } // Paper - configure mockito agent that is needed in newer java versions
-     testImplementation("org.ow2.asm:asm-tree:9.7.1")
-     testImplementation("org.junit-pioneer:junit-pioneer:2.2.0") // Paper - CartesianTest
-     implementation("net.neoforged:srgutils:1.0.9") // Paper - mappings handling
+     implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21

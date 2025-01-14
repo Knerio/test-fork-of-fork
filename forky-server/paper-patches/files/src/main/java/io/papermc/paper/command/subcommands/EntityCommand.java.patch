@@ -1,0 +1,11 @@
+--- a/src/main/java/io/papermc/paper/command/subcommands/EntityCommand.java
++++ b/src/main/java/io/papermc/paper/command/subcommands/EntityCommand.java
+@@ -48,7 +_,7 @@
+         if (args.length == 1) {
+             return CommandUtil.getListMatchingLast(sender, args, "help", "list");
+         } else if (args.length == 2) {
+-            return CommandUtil.getListMatchingLast(sender, args, BuiltInRegistries.ENTITY_TYPE.keySet());
++            return CommandUtil.getListMatchingLast(sender, args, BuiltInRegistries.ENTITY_TYPE.keySet().stream().map(ResourceLocation::toString).sorted().toArray(String[]::new));
+         }
+         return Collections.emptyList();
+     }

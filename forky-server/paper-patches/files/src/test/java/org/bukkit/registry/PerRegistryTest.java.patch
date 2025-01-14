@@ -1,0 +1,16 @@
+--- a/src/test/java/org/bukkit/registry/PerRegistryTest.java
++++ b/src/test/java/org/bukkit/registry/PerRegistryTest.java
+@@ -34,11 +_,11 @@
+             try {
+                 Object object = registryField.get(null);
+                 // Ignore Bukkit's default SimpleRegistry. It cannot be tested correctly
+-                if (object instanceof Registry.NotARegistry) {
++                if (!(object instanceof CraftRegistry<?, ?> registry)) {
+                     continue;
+                 }
+ 
+-                data.add(Arguments.of(object));
++                data.add(Arguments.of(registry));
+             } catch (ReflectiveOperationException e) {
+                 e.printStackTrace();
+             }

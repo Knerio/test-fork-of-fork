@@ -1,0 +1,15 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftBlockInventoryHolder.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftBlockInventoryHolder.java
+@@ -13,9 +_,9 @@
+     private final Block block;
+     private final Inventory inventory;
+ 
+-    public CraftBlockInventoryHolder(LevelAccessor levelAccessor, BlockPos pos, Container container) {
+-        this.block = CraftBlock.at(levelAccessor, pos);
+-        this.inventory = new CraftInventory(container);
++    public CraftBlockInventoryHolder(LevelAccessor world, BlockPos pos, Container inv) {
++        this.block = CraftBlock.at(world, pos);
++        this.inventory = new CraftInventory(inv);
+     }
+     // Paper start - Add missing InventoryHolders
+     public CraftBlockInventoryHolder(net.minecraft.world.inventory.ContainerLevelAccess levelAccess, Inventory inventory) {

@@ -1,0 +1,32 @@
+--- a/src/main/java/org/bukkit/craftbukkit/map/CraftMapView.java
++++ b/src/main/java/org/bukkit/craftbukkit/map/CraftMapView.java
+@@ -5,7 +_,6 @@
+ import java.util.HashMap;
+ import java.util.List;
+ import java.util.Map;
+-import java.util.WeakHashMap;
+ import java.util.logging.Level;
+ import net.minecraft.resources.ResourceKey;
+ import net.minecraft.server.MinecraftServer;
+@@ -20,9 +_,9 @@
+ 
+ public final class CraftMapView implements MapView {
+ 
+-    private final Map<CraftPlayer, RenderData> renderCache = new WeakHashMap<>();
+-    private final List<MapRenderer> renderers = new ArrayList<>();
+-    private final Map<MapRenderer, Map<CraftPlayer, CraftMapCanvas>> canvases = new HashMap<>();
++    private final Map<CraftPlayer, RenderData> renderCache = new HashMap<CraftPlayer, RenderData>();
++    private final List<MapRenderer> renderers = new ArrayList<MapRenderer>();
++    private final Map<MapRenderer, Map<CraftPlayer, CraftMapCanvas>> canvases = new HashMap<MapRenderer, Map<CraftPlayer, CraftMapCanvas>>();
+     protected final MapItemSavedData worldMap;
+ 
+     public CraftMapView(MapItemSavedData worldMap) {
+@@ -100,7 +_,7 @@
+     public void addRenderer(MapRenderer renderer) {
+         if (!this.renderers.contains(renderer)) {
+             this.renderers.add(renderer);
+-            this.canvases.put(renderer, new WeakHashMap<>());
++            this.canvases.put(renderer, new HashMap<CraftPlayer, CraftMapCanvas>());
+             renderer.initialize(this);
+         }
+     }

@@ -1,0 +1,18 @@
+--- a/src/main/java/org/bukkit/craftbukkit/util/DelegatedGeneratorAccess.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/DelegatedGeneratorAccess.java
+@@ -613,8 +_,8 @@
+     }
+ 
+     @Override
+-    public BlockHitResult clip(ClipContext traverseContext, BlockPos traversePos) {
+-        return this.handle.clip(traverseContext, traversePos);
++    public BlockHitResult clip(ClipContext raytrace1, BlockPos blockposition) {
++        return this.handle.clip(raytrace1, blockposition);
+     }
+ 
+     @Override
+@@ -812,4 +_,3 @@
+     }
+     // Paper end
+ }
+-

@@ -1,0 +1,69 @@
+--- a/src/main/java/io/papermc/paper/configuration/PaperConfigurations.java
++++ b/src/main/java/io/papermc/paper/configuration/PaperConfigurations.java
+@@ -10,7 +_,6 @@
+ import io.papermc.paper.configuration.serializer.EnumValueSerializer;
+ import io.papermc.paper.configuration.serializer.NbtPathSerializer;
+ import io.papermc.paper.configuration.serializer.PacketClassSerializer;
+-import io.papermc.paper.configuration.serializer.ResourceLocationSerializer;
+ import io.papermc.paper.configuration.serializer.StringRepresentableSerializer;
+ import io.papermc.paper.configuration.serializer.collections.FastutilMapSerializer;
+ import io.papermc.paper.configuration.serializer.collections.MapSerializer;
+@@ -49,7 +_,6 @@
+ import java.util.function.Function;
+ import java.util.function.Supplier;
+ import net.minecraft.core.RegistryAccess;
+-import net.minecraft.core.component.DataComponentType;
+ import net.minecraft.core.registries.Registries;
+ import net.minecraft.resources.ResourceLocation;
+ import net.minecraft.server.MinecraftServer;
+@@ -182,7 +_,6 @@
+             .register(Duration.SERIALIZER)
+             .register(DurationOrDisabled.SERIALIZER)
+             .register(NbtPathSerializer.SERIALIZER)
+-            .register(ResourceLocationSerializer.INSTANCE)
+         );
+     }
+ 
+@@ -196,17 +_,16 @@
+     }
+ 
+     @Override
+-    protected YamlConfigurationLoader.Builder createGlobalLoaderBuilder(RegistryAccess registryAccess) {
+-        return super.createGlobalLoaderBuilder(registryAccess)
+-            .defaultOptions((options) -> defaultGlobalOptions(registryAccess, options));
++    protected YamlConfigurationLoader.Builder createGlobalLoaderBuilder() {
++        return super.createGlobalLoaderBuilder()
++            .defaultOptions(PaperConfigurations::defaultGlobalOptions);
+     }
+ 
+-    private static ConfigurationOptions defaultGlobalOptions(RegistryAccess registryAccess, ConfigurationOptions options) {
++    private static ConfigurationOptions defaultGlobalOptions(ConfigurationOptions options) {
+         return options
+             .header(GLOBAL_HEADER)
+             .serializers(builder -> builder
+                 .register(new PacketClassSerializer())
+-                .register(new RegistryValueSerializer<>(new TypeToken<DataComponentType<?>>() {}, registryAccess, Registries.DATA_COMPONENT_TYPE, false))
+             );
+     }
+ 
+@@ -321,7 +_,7 @@
+ 
+     public void reloadConfigs(MinecraftServer server) {
+         try {
+-            this.initializeGlobalConfiguration(server.registryAccess(), reloader(this.globalConfigClass, GlobalConfiguration.get()));
++            this.initializeGlobalConfiguration(reloader(this.globalConfigClass, GlobalConfiguration.get()));
+             this.initializeWorldDefaultsConfiguration(server.registryAccess());
+             for (ServerLevel level : server.getAllLevels()) {
+                 this.createWorldConfig(createWorldContextMap(level), reloader(this.worldConfigClass, level.paperConfig()));
+@@ -459,9 +_,9 @@
+     }
+ 
+     @VisibleForTesting
+-    static ConfigurationNode createForTesting(RegistryAccess registryAccess) {
++    static ConfigurationNode createForTesting() {
+         ObjectMapper.Factory factory = defaultGlobalFactoryBuilder(ObjectMapper.factoryBuilder()).build();
+-        ConfigurationOptions options = defaultGlobalOptions(registryAccess, defaultOptions(ConfigurationOptions.defaults()))
++        ConfigurationOptions options = defaultGlobalOptions(defaultOptions(ConfigurationOptions.defaults()))
+             .serializers(builder -> builder.register(type -> ConfigurationPart.class.isAssignableFrom(erase(type)), factory.asTypeSerializer()));
+         return BasicConfigurationNode.root(options);
+     }

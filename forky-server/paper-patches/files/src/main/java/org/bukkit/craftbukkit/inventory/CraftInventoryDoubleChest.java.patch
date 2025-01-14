@@ -1,0 +1,16 @@
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventoryDoubleChest.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventoryDoubleChest.java
+@@ -16,10 +_,10 @@
+     private final CraftInventory right;
+ 
+     public CraftInventoryDoubleChest(ChestBlock.DoubleInventory block) {
+-        super(block.container);
++        super(block.inventorylargechest);
+         this.tile = block;
+-        this.left = new CraftInventory(block.container.container1);
+-        this.right = new CraftInventory(block.container.container2);
++        this.left = new CraftInventory(block.inventorylargechest.container1);
++        this.right = new CraftInventory(block.inventorylargechest.container2);
+     }
+ 
+     public CraftInventoryDoubleChest(CompoundContainer largeChest) {

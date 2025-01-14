@@ -1,0 +1,21 @@
+--- a/src/main/java/io/papermc/paper/registry/PaperSimpleRegistry.java
++++ b/src/main/java/io/papermc/paper/registry/PaperSimpleRegistry.java
+@@ -3,7 +_,6 @@
+ import io.papermc.paper.registry.set.NamedRegistryKeySetImpl;
+ import io.papermc.paper.registry.tag.Tag;
+ import io.papermc.paper.registry.tag.TagKey;
+-import java.util.Collection;
+ import java.util.function.Predicate;
+ import net.minecraft.core.HolderSet;
+ import net.minecraft.core.registries.BuiltInRegistries;
+@@ -51,10 +_,5 @@
+     public Tag<T> getTag(final TagKey<T> key) {
+         final HolderSet.Named<M> namedHolderSet = this.nmsRegistry.get(PaperRegistries.toNms(key)).orElseThrow();
+         return new NamedRegistryKeySetImpl<>(key, namedHolderSet);
+-    }
+-
+-    @Override
+-    public Collection<Tag<T>> getTags() {
+-        return this.nmsRegistry.getTags().<Tag<T>>map(NamedRegistryKeySetImpl::new).toList();
+     }
+ }

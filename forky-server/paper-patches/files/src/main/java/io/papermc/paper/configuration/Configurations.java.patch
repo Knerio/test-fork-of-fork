@@ -1,0 +1,32 @@
+--- a/src/main/java/io/papermc/paper/configuration/Configurations.java
++++ b/src/main/java/io/papermc/paper/configuration/Configurations.java
+@@ -80,7 +_,7 @@
+     }
+ 
+     @MustBeInvokedByOverriders
+-    protected YamlConfigurationLoader.Builder createGlobalLoaderBuilder(RegistryAccess registryAccess) {
++    protected YamlConfigurationLoader.Builder createGlobalLoaderBuilder() {
+         return this.createLoaderBuilder();
+     }
+ 
+@@ -104,7 +_,7 @@
+     }
+ 
+     public G initializeGlobalConfiguration(final RegistryAccess registryAccess) throws ConfigurateException {
+-        return this.initializeGlobalConfiguration(registryAccess, creator(this.globalConfigClass, true));
++        return this.initializeGlobalConfiguration(creator(this.globalConfigClass, true));
+     }
+ 
+     private void trySaveFileNode(YamlConfigurationLoader loader, ConfigurationNode node, String filename) throws ConfigurateException {
+@@ -117,9 +_,9 @@
+         }
+     }
+ 
+-    protected G initializeGlobalConfiguration(final RegistryAccess registryAccess, final CheckedFunction<ConfigurationNode, G, SerializationException> creator) throws ConfigurateException {
++    protected G initializeGlobalConfiguration(final CheckedFunction<ConfigurationNode, G, SerializationException> creator) throws ConfigurateException {
+         final Path configFile = this.globalFolder.resolve(this.globalConfigFileName);
+-        final YamlConfigurationLoader loader = this.createGlobalLoaderBuilder(registryAccess)
++        final YamlConfigurationLoader loader = this.createGlobalLoaderBuilder()
+             .defaultOptions(this.applyObjectMapperFactory(this.createGlobalObjectMapperFactoryBuilder().build()))
+             .path(configFile)
+             .build();
