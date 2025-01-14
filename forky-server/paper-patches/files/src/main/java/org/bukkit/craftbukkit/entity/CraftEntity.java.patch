@@ -1,16 +1,15 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -8,7 +_,8 @@
+@@ -6,6 +_,8 @@
+ import com.google.common.collect.ImmutableSet;
+ import com.google.common.collect.Lists;
  import java.util.List;
- import java.util.Set;
- import java.util.UUID;
--import io.papermc.paper.entity.LookAnchor;
 +import de.varilx.core.common.translation.Locale;
 +import net.kyori.adventure.text.minimessage.MiniMessage;
+ import java.util.Set;
+ import java.util.UUID;
  import net.minecraft.nbt.CompoundTag;
- import net.minecraft.nbt.Tag;
- import net.minecraft.network.chat.Component;
-@@ -24,6 +_,7 @@
+@@ -23,6 +_,7 @@
  import net.minecraft.world.level.portal.TeleportTransition;
  import net.minecraft.world.phys.AABB;
  import net.minecraft.world.phys.Vec3;
@@ -18,15 +17,7 @@
  import org.bukkit.EntityEffect;
  import org.bukkit.Location;
  import org.bukkit.Server;
-@@ -46,7 +_,6 @@
- import org.bukkit.entity.Player;
- import org.bukkit.entity.Pose;
- import org.bukkit.entity.SpawnCategory;
--import org.bukkit.event.entity.CreatureSpawnEvent;
- import org.bukkit.event.entity.EntityDamageEvent;
- import org.bukkit.event.entity.EntityRemoveEvent;
- import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-@@ -62,6 +_,7 @@
+@@ -60,6 +_,7 @@
  import org.bukkit.util.Vector;
  
  import net.md_5.bungee.api.chat.BaseComponent; // Spigot
@@ -34,64 +25,11 @@
  
  public abstract class CraftEntity implements org.bukkit.entity.Entity {
      private static PermissibleBase perm;
-@@ -264,7 +_,7 @@
-         // Paper start - Teleport passenger API
-         Set<io.papermc.paper.entity.TeleportFlag> flagSet = Set.of(flags);
-         boolean dismount = !flagSet.contains(io.papermc.paper.entity.TeleportFlag.EntityState.RETAIN_VEHICLE);
--        boolean retainPassengers = flagSet.contains(io.papermc.paper.entity.TeleportFlag.EntityState.RETAIN_PASSENGERS);
-+        boolean ignorePassengers = flagSet.contains(io.papermc.paper.entity.TeleportFlag.EntityState.RETAIN_PASSENGERS);
-         // Don't allow teleporting between worlds while keeping passengers
-         if (flagSet.contains(io.papermc.paper.entity.TeleportFlag.EntityState.RETAIN_PASSENGERS) && this.entity.isVehicle() && location.getWorld() != this.getWorld()) {
-             if (!new org.purpurmc.purpur.event.entity.EntityTeleportHinderedEvent(entity.getBukkitEntity(), org.purpurmc.purpur.event.entity.EntityTeleportHinderedEvent.Reason.IS_VEHICLE, cause).callEvent()) // Purpur - Add EntityTeleportHinderedEvent
-@@ -277,7 +_,7 @@
-         }
-         // Paper end
- 
--        if ((!retainPassengers && this.entity.isVehicle()) || this.entity.isRemoved()) { // Paper - Teleport passenger API
-+        if ((!ignorePassengers && this.entity.isVehicle()) || this.entity.isRemoved()) { // Paper - Teleport passenger API
-             return false;
-         }
- 
-@@ -308,9 +_,6 @@
-         // SPIGOT-619: Force sync head rotation also
-         this.entity.setYHeadRot(location.getYaw());
- 
--        // Ensure passengers of entity are teleported
--        if (retainPassengers && this.entity.isVehicle()) this.entity.teleportPassengers();
--
-         return true;
-     }
- 
-@@ -325,25 +_,6 @@
-     }
- 
-     @Override
--    public void lookAt(double x, double y, double z, LookAnchor entityAnchor) {
--        this.getHandle().lookAt(toNmsAnchor(entityAnchor), new net.minecraft.world.phys.Vec3(x, y, z));
--    }
--
--    public static net.minecraft.commands.arguments.EntityAnchorArgument.Anchor toNmsAnchor(LookAnchor nmsAnchor) {
--        return switch (nmsAnchor) {
--            case EYES -> net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.EYES;
--            case FEET -> net.minecraft.commands.arguments.EntityAnchorArgument.Anchor.FEET;
--        };
--    }
--
--    public static LookAnchor toApiAnchor(net.minecraft.commands.arguments.EntityAnchorArgument.Anchor playerAnchor) {
--        return switch (playerAnchor) {
--            case EYES -> LookAnchor.EYES;
--            case FEET -> LookAnchor.FEET;
--        };
--    }
--
--    @Override
-     public List<org.bukkit.entity.Entity> getNearbyEntities(double x, double y, double z) {
-         Preconditions.checkState(!this.entity.generation, "Cannot get nearby entities during world generation");
-         org.spigotmc.AsyncCatcher.catchOp("getNearbyEntities"); // Spigot
-@@ -758,6 +_,22 @@
+@@ -733,6 +_,22 @@
+     public void sendMessage(String message) {
  
      }
- 
++
 +    // Varilx - Start
 +
 +
@@ -107,49 +45,6 @@
 +    }
 +
 +    // Varilx - End
-+
+ 
      @Override
      public void sendMessage(String... messages) {
- 
-@@ -979,7 +_,7 @@
-     @Override
-     public String getAsString() {
-         CompoundTag tag = new CompoundTag();
--        if (!this.getHandle().saveAsPassenger(tag, false, false, false)) {
-+        if (!this.getHandle().saveAsPassenger(tag, false)) {
-             return null;
-         }
- 
-@@ -1012,7 +_,7 @@
- 
-     private Entity copy(net.minecraft.world.level.Level level) {
-         CompoundTag compoundTag = new CompoundTag();
--        this.getHandle().saveAsPassenger(compoundTag, false, true, true);
-+        this.getHandle().saveAsPassenger(compoundTag, false);
- 
-         return net.minecraft.world.entity.EntityType.loadEntityRecursive(compoundTag, level, EntitySpawnReason.LOAD, java.util.function.Function.identity());
-     }
-@@ -1248,19 +_,17 @@
-     }
-     // Paper end - tracked players API
- 
-+    // Paper start - raw entity serialization API
-     @Override
--    public boolean spawnAt(Location location, CreatureSpawnEvent.SpawnReason reason) {
-+    public boolean spawnAt(Location location, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason reason) {
-         Preconditions.checkNotNull(location, "location cannot be null");
-         Preconditions.checkNotNull(reason, "reason cannot be null");
-         this.entity.setLevel(((CraftWorld) location.getWorld()).getHandle());
-         this.entity.setPos(location.getX(), location.getY(), location.getZ());
-         this.entity.setRot(location.getYaw(), location.getPitch());
--        final boolean spawned = !this.entity.valid && this.entity.level().addFreshEntity(this.entity, reason);
--        if (!spawned) return false; // Do not attempt to spawn rest if root was not spawned in
--        // Like net.minecraft.world.level.ServerLevelAccessor.addFreshEntityWithPassengers(net.minecraft.world.entity.Entity, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason)
--        this.entity.getIndirectPassengers().forEach(e -> e.level().addFreshEntity(e, reason));
--        return true;
-+        return !this.entity.valid && this.entity.level().addFreshEntity(this.entity, reason);
-     }
-+    // Paper end - raw entity serialization API
- 
-     // Paper start - entity powdered snow API
-     @Override

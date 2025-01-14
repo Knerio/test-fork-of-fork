@@ -1,4 +1,0 @@
---- /dev/null
-+++ b/src/assembly/META-INF/main-class
-@@ -1,0 +_,1 @@
-+org.bukkit.craftbukkit.Main

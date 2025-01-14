@@ -25,7 +25,7 @@
  import net.minecraft.advancements.AdvancementHolder;
  import net.minecraft.commands.CommandSourceStack;
  import net.minecraft.commands.Commands;
-@@ -320,6 +_,8 @@
+@@ -319,6 +_,8 @@
      private final io.papermc.paper.threadedregions.scheduler.FoliaAsyncScheduler asyncScheduler = new io.papermc.paper.threadedregions.scheduler.FoliaAsyncScheduler();
      private final io.papermc.paper.threadedregions.scheduler.FoliaGlobalRegionScheduler globalRegionScheduler = new io.papermc.paper.threadedregions.scheduler.FoliaGlobalRegionScheduler();
  
@@ -34,7 +34,7 @@
      @Override
      public final io.papermc.paper.threadedregions.scheduler.RegionScheduler getRegionScheduler() {
          return this.regionizedScheduler;
-@@ -397,6 +_,11 @@
+@@ -396,6 +_,11 @@
      }
      // Paper end - Folia reagion threading API
  
@@ -46,7 +46,7 @@
      static {
          ConfigurationSerialization.registerClass(CraftOfflinePlayer.class);
          ConfigurationSerialization.registerClass(CraftPlayerProfile.class);
-@@ -407,6 +_,8 @@
+@@ -406,6 +_,8 @@
  
      public CraftServer(DedicatedServer console, PlayerList playerList) {
          this.console = console;
@@ -55,16 +55,7 @@
          this.playerList = (DedicatedPlayerList) playerList;
          this.playerView = Collections.unmodifiableList(Lists.transform(playerList.players, new Function<ServerPlayer, CraftPlayer>() {
              @Override
-@@ -898,7 +_,7 @@
- 
-     @Override
-     public boolean hasWhitelist() {
--        return this.playerList.isUsingWhitelist();
-+        return this.getProperties().whiteList.get();
-     }
- 
-     // NOTE: Temporary calls through to server.properies until its replaced
-@@ -2155,6 +_,98 @@
+@@ -2154,6 +_,98 @@
          this.console.halt(false);
      }
  
@@ -163,7 +154,7 @@
      @Override
      @Deprecated // Paper
      public int broadcast(String message, String permission) {
-@@ -2545,6 +_,27 @@
+@@ -2544,6 +_,27 @@
          return CraftInventoryCreator.INSTANCE.createInventory(owner, size, title);
      }
  
@@ -191,28 +182,7 @@
      // Paper start
      @Override
      public Merchant createMerchant(net.kyori.adventure.text.Component title) {
-@@ -2558,11 +_,6 @@
-     }
- 
-     @Override
--    public @NotNull Merchant createMerchant() {
--        return new CraftMerchantCustom(net.kyori.adventure.text.Component.empty());
--    }
--
--    @Override
-     public int getMaxChainedNeighborUpdates() {
-         return this.getServer().getMaxChainedNeighborUpdates();
-     }
-@@ -2627,7 +_,7 @@
- 
-     @Override
-     public boolean isPrimaryThread() {
--        return ca.spottedleaf.moonrise.common.util.TickThread.isTickThread(); // Paper - rewrite chunk system
-+        return Thread.currentThread().equals(this.console.serverThread) || this.console.hasStopped() || !org.spigotmc.AsyncCatcher.enabled; // All bets are off if we have shut down (e.g. due to watchdog)
-     }
- 
-     // Paper start - Adventure
-@@ -3391,5 +_,11 @@
+@@ -3385,5 +_,11 @@
      public boolean isLagging() {
          return getServer().lagging;
      }
