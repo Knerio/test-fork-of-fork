@@ -1,6 +1,6 @@
 --- /dev/null
 +++ b/net/minecraft/server/commands/TranslationCommand.java
-@@ -1,0 +_,47 @@
+@@ -1,0 +_,50 @@
 +package net.minecraft.server.commands;
 +
 +import com.mojang.brigadier.Command;
@@ -10,41 +10,44 @@
 +import net.minecraft.commands.CommandSourceStack;
 +import net.minecraft.commands.Commands;
 +import org.bukkit.Bukkit;
++
 +import java.util.Arrays;
 +
 +public class TranslationCommand {
++
 +    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
 +        dispatcher.register(
-+            Commands.literal("translation")
-+                .requires(ctx -> ctx.hasPermission(2, "bukkit.command.translation"))
-+                .then(Commands.literal("reload").executes(ctx -> {
-+                    new Thread(() -> {
-+                        Bukkit.getVarilxCommon().getTranslationService().reload();
-+                        ctx.getSource().getSender().sendTranslatedMessage("translation_reloaded");
-+                    }).start();
-+                    return Command.SINGLE_SUCCESS;
-+                }))
-+                .then(Commands.argument("key", StringArgumentType.string())
-+                    .suggests((ctx, builder) -> {
-+                        Bukkit.getVarilxCommon().getTranslationService().getTranslations().values().stream()
-+                            .flatMap(value -> value.getLanguages().values().stream())
-+                            .flatMap(languageMap -> languageMap.values().stream())
-+                            .map(Translation::getKey)
-+                            .filter(s -> s.toLowerCase().contains(builder.getRemaining()))
-+                            .forEach(builder::suggest);
-+                        return builder.buildFuture();
-+                    })
-+                    .executes(ctx -> {
-+                        String key = ctx.getArgument("key", String.class);
-+                        ctx.getSource().getSender().sendTranslatedMessage(key);
-+                        return Command.SINGLE_SUCCESS;
-+                    })
-+                    .then(Commands.argument("args", StringArgumentType.greedyString())
-+                        .executes(ctx -> {
-+                            String key = ctx.getArgument("key", String.class);
-+                            Object[] args = Arrays.stream(ctx.getArgument("args", String.class).split(" ")).toArray(Object[]::new);
-+                            ctx.getSource().getSender().sendTranslatedMessage(key, args);
++                Commands.literal("translation")
++                        .requires(ctx -> ctx.hasPermission(2, "bukkit.command.translation"))
++                        .then(Commands.literal("reload").executes(ctx -> {
++                            new Thread(() -> {
++                                Bukkit.getVarilxCommon().getTranslationService().reload();
++                                ctx.getSource().getSender().sendTranslatedMessage("translation_reloaded");
++                            }).start();
 +                            return Command.SINGLE_SUCCESS;
-+                        }))));
++                        }))
++                        .then(Commands.argument("key", StringArgumentType.string())
++                                .suggests((ctx, builder) -> {
++                                    Bukkit.getVarilxCommon().getTranslationService().getTranslations().values().stream()
++                                            .flatMap(value -> value.getLanguages().values().stream())
++                                            .flatMap(languageMap -> languageMap.values().stream())
++                                            .map(Translation::getKey)
++                                            .filter(s -> s.toLowerCase().contains(builder.getRemaining()))
++                                            .forEach(builder::suggest);
++                                    return builder.buildFuture();
++                                })
++                                .executes(ctx -> {
++                                    String key = ctx.getArgument("key", String.class);
++                                    ctx.getSource().getSender().sendTranslatedMessage(key);
++                                    return Command.SINGLE_SUCCESS;
++                                })
++                                .then(Commands.argument("args", StringArgumentType.greedyString())
++                                        .executes(ctx -> {
++                                            String key = ctx.getArgument("key", String.class);
++                                            Object[] args = Arrays.stream(ctx.getArgument("args", String.class).split(" ")).toArray(Object[]::new);
++                                            ctx.getSource().getSender().sendTranslatedMessage(key, args);
++                                            return Command.SINGLE_SUCCESS;
++                                        }))));
 +    }
++
 +}

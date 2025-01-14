@@ -1,0 +1,689 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Dario Pranjic <derioreal63@gmail.com>
+Date: Tue, 14 Jan 2025 22:37:11 +0100
+Subject: [PATCH] Init translations
+
+
+diff --git a/src/main/java/io/papermc/paper/ServerBuildInfo.java b/src/main/java/io/papermc/paper/ServerBuildInfo.java
+index fb1fe2651e53a9bf46b3632c638e13eea9dcda93..7d180ceb1e3e19278912c9307c0eb72dc6535cd2 100644
+--- a/src/main/java/io/papermc/paper/ServerBuildInfo.java
++++ b/src/main/java/io/papermc/paper/ServerBuildInfo.java
+@@ -25,6 +25,13 @@ public interface ServerBuildInfo {
+      */
+     Key BRAND_PURPUR_ID = Key.key("purpurmc", "purpur");
+     // Purpur end
++    // Varilx start
++    /**
++     * The brand id for varilx.
++     */
++    Key BRAND_VARILX_ID = Key.key("vaxspigot", "vaxspigot");
++    // Varilx end
++
+     /**
+      * Gets the {@code ServerBuildInfo}.
+      *
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index 249d6549543c059694a9372200b8581feb8dd8f8..75e934bfcffc5dea8e34cad85407f2cec6d92120 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -14,6 +14,8 @@ import java.util.Set;
+ import java.util.UUID;
+ import java.util.function.Consumer;
+ import java.util.logging.Logger;
++
++import de.varilx.core.common.CommonAPI;
+ import org.bukkit.Warning.WarningState;
+ import org.bukkit.advancement.Advancement;
+ import org.bukkit.block.data.BlockData;
+@@ -74,6 +76,83 @@ public final class Bukkit {
+      */
+     private Bukkit() {}
+ 
++    //Varilx Start
++    public static @NotNull CommonAPI getVarilxCommon() {
++        return getServer().getVarilxCommon();
++    }
++    //Varilx End
++
++    // Varilx Start
++
++    /**
++     * Sends a translated broadcast message based on the specified message key and arguments.
++     *
++     * This method uses the server instance to perform the broadcast.
++     *
++     * @param messageKey The key for the broadcast message translation.
++     * @param args The arguments to be used in the translation.
++     * @return An integer representing the result of the broadcast operation.
++     */
++    public static int translatedBroadcast(@NotNull String messageKey, @NotNull Object... args) {
++        return server.translatedBroadcast(messageKey, args);
++    }
++
++    /**
++     * Sends a translated broadcast message based on the specified message key, project, locale, and arguments.
++     *
++     * This method uses the server instance to perform the broadcast.
++     *
++     * @param messageKey The key for the broadcast message translation.
++     * @param project The name of the project used for translation context.
++     * @param locale The locale to use for translation.
++     * @param args The arguments to be used in the translation.
++     * @return An integer representing the result of the broadcast operation.
++     */
++    public static int translatedBroadcast(@NotNull String messageKey, @NotNull String project, @NotNull Locale locale, @NotNull Object... args) {
++        return server.translatedBroadcast(messageKey, project, locale, args);
++    }
++
++
++    /**
++     * Creates a translated inventory
++     * @param owner the owner
++     * @param titleKey the titlekey
++     * @return the inventory
++     * @see Bukkit#createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)
++     */
++    @NotNull
++    public static Inventory createTranslatedInventory(@Nullable InventoryHolder owner, int size, @NotNull String titleKey, @NotNull Object@NotNull ... args) {
++        return server.createTranslatedInventory(owner, size, titleKey, args);
++    }
++
++    /**
++     * Creates a translated inventory
++     * @param owner the owner
++     * @param titleKey the titlekey
++     * @return the inventory
++     * @see Bukkit#createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)
++     */
++    @NotNull
++    public static Inventory createTranslatedInventory(@Nullable InventoryHolder owner, int size, @NotNull String titleKey, @NotNull String project,@NotNull  Object@NotNull ... args) {
++        return server.createTranslatedInventory(owner, size, titleKey, project, args);
++    }
++
++    /**
++     * Creates a translated inventory
++     * @param owner the owner
++     * @param titleKey the titlekey
++     * @param locale the locale
++     * @param project the project
++     * @return the inventory
++     * @see Bukkit#createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)
++     */
++    @NotNull
++    public static Inventory createTranslatedInventory(@Nullable InventoryHolder owner, int size, @NotNull String titleKey, @NotNull String project, @NotNull Locale locale,@NotNull  Object@NotNull ... args) {
++        return server.createTranslatedInventory(owner, size, titleKey, project, locale, args);
++    }
++
++    // Varilx - End
++
+     /**
+      * Gets the current {@link Server} singleton
+      *
+@@ -115,10 +194,10 @@ public final class Bukkit {
+         server.getLogger().info(getVersionMessage());
+     }
+     /**
+-      * Gets message describing the version server is running.
+-      *
+-      * @return message describing the version server is running
+-      */
++     * Gets message describing the version server is running.
++     *
++     * @return message describing the version server is running
++     */
+     @NotNull
+     public static String getVersionMessage() {
+         final io.papermc.paper.ServerBuildInfo version = io.papermc.paper.ServerBuildInfo.buildInfo();
+@@ -3024,7 +3103,7 @@ public final class Bukkit {
+     }
+     // Purpur end - Added the ability to add combustible items
+ 
+-        // Purpur start - Debug Marker API
++    // Purpur start - Debug Marker API
+     /**
+      * Creates debug block highlight on specified block location and show it to all players on the server.
+      * <p>
+@@ -3110,3 +3189,5 @@ public final class Bukkit {
+     }
+     // Purpur end - Debug Marker API
+ }
++
++
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index 594bcedd823acc87ed429ad8ef17b66e9dc15beb..336344acd46e5381526ced5fe9fc5a8d4a1c8777 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -14,9 +14,13 @@ import java.util.Set;
+ import java.util.UUID;
+ import java.util.function.Consumer;
+ import java.util.logging.Logger;
++
++import de.varilx.core.common.CommonAPI;
++import de.varilx.core.common.translation.Locale;
+ import net.kyori.adventure.text.Component;
+ import net.kyori.adventure.text.minimessage.MiniMessage;
+ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
++import net.kyori.adventure.title.Title;
+ import org.bukkit.Warning.WarningState;
+ import org.bukkit.advancement.Advancement;
+ import org.bukkit.block.data.BlockData;
+@@ -72,6 +76,202 @@ import org.jetbrains.annotations.Nullable;
+  */
+ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audience.ForwardingAudience { // Paper
+ 
++    // Varilx start
++
++    /**
++     * Gets the CommonAPI instance
++     * @return the instance
++     */
++    @NotNull
++    public CommonAPI getVarilxCommon();
++
++    /**
++     * This method trys to find the project with the given key
++     * If not found uses the common project
++     * @param key the key
++     * @param args the args for the message
++     * @see CommandSender#sendTranslatedMessage(String, String, Locale, Object...)
++     */
++    public void sendTranslatedMessage(@NotNull String key, @NotNull Object... args);
++
++    /**
++     * This method sends a translated message
++     * @param key the message key
++     * @param project the project where the key is located
++     * @param locale the locale
++     * @param args the args (<1>, <2>, ...)
++     */
++    public void sendTranslatedMessage(@NotNull String key, @NotNull String project, @NotNull Locale locale, @NotNull Object... args);
++
++    /**
++     * Displays a translated title based on the specified title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull Object... args);
++
++    /**
++     * Displays a translated title based on the specified title key, project, locale, and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param project The name of the project used for translation context.
++     * @param locale The locale to use for translation.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull String project, @NotNull Locale locale, @NotNull Object... args);
++
++    /**
++     * Displays a translated title with specified times based on the title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param times The timing information for the title display.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull Title.Times times, @NotNull Object... args);
++
++    /**
++     * Displays a translated title with specified times and project based on the title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param project The name of the project used for translation context.
++     * @param times The timing information for the title display.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull String project, @NotNull Title.Times times, @NotNull Object... args);
++
++    /**
++     * Displays a translated title with specified times, project, and locale based on the title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param project The name of the project used for translation context.
++     * @param locale The locale to use for translation.
++     * @param times The timing information for the title display.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull String project, @NotNull Locale locale, @NotNull Title.Times times, @NotNull Object... args);
++
++
++    /**
++     * Shows a translated bossbar to the whole server
++     * with the default Locale
++     * @param bossbarKey the message key for the bossbar
++     */
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull Object @NotNull ... args);
++
++    /**
++     * Shows a translated bossbar to the whole server
++     * with the default Locale
++     * @param bossbarKey the message key for the bossbar
++     * @param bossBar the bossbar settings
++     */
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Object @NotNull ... args);
++
++    /**
++     * Shows a translated bossbar to the whole server
++     * with the default Locale
++     * @param bossbarKey the message key for the bossbar
++     * @param project the project
++     * @param bossBar the bossbar settings
++     */
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull String project, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Object @NotNull ... args);
++
++    /**
++     * Shows a translated bossbar to the whole server
++     * @param bossbarKey the message key for the bossbar
++     * @param project the project
++     * @param locale the locale
++     * @param bossBar the bossbar settings
++     * @see #showBossBar(net.kyori.adventure.bossbar.BossBar)
++     */
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull String project, @NotNull Locale locale, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Object @NotNull ... args);
++
++    /**
++     * Sends a translated action bar
++     * @param messageKey the message key
++     * @param args the args for the messag
++     * @see #sendTranslatedActionBar(String, String, Locale, Object...)
++     * @see #sendTranslatedMessage(String, String, Locale, Object...)
++     */
++    public void sendTranslatedActionBar(@NotNull String messageKey, @NotNull Object@NotNull ... args);
++
++
++    /**
++     * Sends a translated actionbar
++     * @param messageKey the message key
++     * @param project the project
++     * @param locale the locale
++     * @param args the args
++     * @see #sendTranslatedMessage(String, String, Locale, Object...)
++     */
++    public void sendTranslatedActionBar(@NotNull String messageKey, @NotNull String project, @NotNull Locale locale, Object @NotNull... args);
++
++
++
++    /**
++     * Sends a translated broadcast message based on the specified message key and arguments.
++     *
++     * @param messageKey The key for the broadcast message translation.
++     * @param args The arguments to be used in the translation.
++     * @return An integer representing the result of the broadcast operation.
++     */
++    int translatedBroadcast(@NotNull String messageKey, @NotNull Object[] args);
++
++    /**
++     * Sends a translated broadcast message based on the specified message key, project, and arguments.
++     *
++     * @param messageKey The key for the broadcast message translation.
++     * @param project The name of the project used for translation context.
++     * @param args The arguments to be used in the translation.
++     * @return An integer representing the result of the broadcast operation.
++     */
++    int translatedBroadcast(@NotNull String messageKey, @NotNull String project, @NotNull Object[] args);
++
++    /**
++     * Sends a translated broadcast message based on the specified message key, project, locale, and arguments.
++     *
++     * @param messageKey The key for the broadcast message translation.
++     * @param project The name of the project used for translation context.
++     * @param locale The locale to use for translation.
++     * @param args The arguments to be used in the translation.
++     * @return An integer representing the result of the broadcast operation.
++     */
++    int translatedBroadcast(@NotNull String messageKey, @NotNull String project, @NotNull Locale locale, @NotNull Object[] args);
++
++
++    /**
++     * Creates a translated inventory
++     *
++     * @param owner the owner
++     * @param titleKey the titlekey
++     * @return the inventory
++     * @see Bukkit#createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)
++     */
++    @NotNull Inventory createTranslatedInventory(@Nullable InventoryHolder owner, int size, @NotNull String titleKey, @NotNull Object @NotNull ... args);
++
++    /**
++     * Creates a translated inventory
++     * @param owner the owner
++     * @param titleKey the titlekey
++     * @return the inventory
++     * @see Bukkit#createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)
++     */
++    @NotNull Inventory createTranslatedInventory(@Nullable InventoryHolder owner, int size, @NotNull String titleKey, @NotNull String project, @NotNull Object @NotNull ... args);
++
++    /**
++     * Creates a translated inventory
++     * @param owner the owner
++     * @param titleKey the titlekey
++     * @param locale the locale
++     * @param project the project
++     * @return the inventory
++     * @see Bukkit#createInventory(InventoryHolder, InventoryType, net.kyori.adventure.text.Component)
++     */
++    @NotNull Inventory createTranslatedInventory(@Nullable InventoryHolder owner, int size, @NotNull String titleKey, @NotNull String project, @NotNull Locale locale, @NotNull Object @NotNull ... args);
++
++
++    // Varilx end
++
+     /**
+      * Returns the de facto plugins directory, generally used for storing plugin jars to be loaded,
+      * as well as their {@link org.bukkit.plugin.Plugin#getDataFolder() data folders}.
+@@ -2774,3 +2974,4 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+     void clearBlockHighlights();
+     // Purpur end - Debug Marker API
+ }
++
+diff --git a/src/main/java/org/bukkit/command/CommandSender.java b/src/main/java/org/bukkit/command/CommandSender.java
+index 04e7cd0e4e2d0eb38fb2862ce6688a4470f30d6b..a72873616b642982889e5a2f30953422af19492a 100644
+--- a/src/main/java/org/bukkit/command/CommandSender.java
++++ b/src/main/java/org/bukkit/command/CommandSender.java
+@@ -1,6 +1,8 @@
+ package org.bukkit.command;
+ 
+ import java.util.UUID;
++
++import de.varilx.core.common.translation.Locale;
+ import net.kyori.adventure.audience.MessageType;
+ import net.kyori.adventure.identity.Identity;
+ import net.kyori.adventure.text.Component;
+@@ -11,6 +13,29 @@ import org.jetbrains.annotations.Nullable;
+ 
+ public interface CommandSender extends net.kyori.adventure.audience.Audience, Permissible { // Paper
+ 
++    // Varilx - Start
++
++    /**
++     * This method trys to find the project with the given key
++     * If not found uses the common project
++     * @param key the key
++     * @param args the args for the message
++     * @see CommandSender#sendTranslatedMessage(String, String, Locale, Object...)
++     */
++    public void sendTranslatedMessage(@NotNull String key, @NotNull Object... args);
++
++    /**
++     * This method sends a translated message
++     * @param key the message key
++     * @param project the project where the key is located
++     * @param locale the locale
++     * @param args the args (<1>, <2>, ...)
++     */
++    public void sendTranslatedMessage(@NotNull String key, @NotNull String project, @NotNull Locale locale, @NotNull Object... args);
++
++    // Varilx - End
++
++
+     /**
+      * Sends this sender a message
+      *
+diff --git a/src/main/java/org/bukkit/command/MessageCommandSender.java b/src/main/java/org/bukkit/command/MessageCommandSender.java
+index d9137e2d318b6616b1827239706f0832aba2b1f0..fa08fba76e4c89d40d77c226301d8e41ba1d84c5 100644
+--- a/src/main/java/org/bukkit/command/MessageCommandSender.java
++++ b/src/main/java/org/bukkit/command/MessageCommandSender.java
+@@ -1,5 +1,6 @@
+ package org.bukkit.command;
+ 
++import de.varilx.core.common.translation.Locale;
+ import org.bukkit.Bukkit;
+ import org.bukkit.Server;
+ import org.bukkit.permissions.Permission;
+@@ -28,6 +29,22 @@ public interface MessageCommandSender extends CommandSender {
+         }
+     }
+ 
++
++    // Varilx - Start
++
++    @Override
++    default void sendTranslatedMessage(String key, Object... args) {
++        throw new UnsupportedOperationException();
++    }
++
++    @Override
++    default void sendTranslatedMessage(String key, String project, Locale locale, Object... args) {
++        throw new UnsupportedOperationException();
++    }
++
++    // Varilx - End
++
++
+     @Override
+     default void sendMessage(@Nullable UUID sender, @NotNull String message) {
+         sendMessage(message);
+diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
+index 3fe282b8c1220d44ead8db41fd30153ff52a8be3..4a1d3aec5230d09ac5a2254b73b67faf281aa0c5 100644
+--- a/src/main/java/org/bukkit/entity/Player.java
++++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -9,7 +9,10 @@ import java.util.Date;
+ import java.util.Map;
+ import java.util.UUID;
+ import java.util.concurrent.CompletableFuture;
++
++import de.varilx.core.common.translation.Locale;
+ import io.papermc.paper.entity.LookAnchor;
++import net.kyori.adventure.title.Title;
+ import org.bukkit.BanEntry;
+ import org.bukkit.DyeColor;
+ import org.bukkit.Effect;
+@@ -61,6 +64,117 @@ import org.jetbrains.annotations.Nullable;
+  */
+ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, net.kyori.adventure.bossbar.BossBarViewer, com.destroystokyo.paper.network.NetworkClient { // Paper
+ 
++
++    // Varilx - Start
++
++    /**
++     * Sends a translated action bar
++     * @param messageKey the message key
++     * @param args the args for the messag
++     * @see #sendTranslatedActionBar(String, String, Locale, Object...)
++     * @see #sendTranslatedMessage(String, String, Locale, Object...)
++     */
++    public void sendTranslatedActionBar(@NotNull String messageKey, @NotNull Object@NotNull ... args);
++
++
++    /**
++     * Sends a translated actionbar
++     * @param messageKey the message key
++     * @param project the project
++     * @param locale the locale
++     * @param args the args
++     * @see #sendTranslatedMessage(String, String, Locale, Object...)
++     */
++    public void sendTranslatedActionBar(@NotNull String messageKey, @NotNull String project, @NotNull Locale locale, Object @NotNull... args);
++
++
++    /**
++     * Displays a translated title based on the specified title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull Object... args);
++
++
++    /**
++     * Displays a translated title based on the specified title key, project, locale, and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param project The name of the project used for translation context.
++     * @param locale The locale to use for translation.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull String project, @NotNull Locale locale, @NotNull Object... args);
++
++    /**
++     * Displays a translated title with specified times based on the title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param times The timing information for the title display.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull Title.Times times, @NotNull Object... args);
++
++    /**
++     * Displays a translated title with specified times and project based on the title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param project The name of the project used for translation context.
++     * @param times The timing information for the title display.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull String project, @NotNull Title.Times times, @NotNull Object... args);
++
++    /**
++     * Displays a translated title with specified times, project, and locale based on the title key and arguments.
++     *
++     * @param titleKey The key for the title translation.
++     * @param project The name of the project used for translation context.
++     * @param locale The locale to use for translation.
++     * @param times The timing information for the title display.
++     * @param args The arguments to be used in the translation.
++     */
++    void showTranslatedTitle(@NotNull String titleKey, @NotNull String project, @NotNull Locale locale, @NotNull Title.Times times, @NotNull Object... args);
++
++
++    /**
++     * Shows a translated bossbar to the user
++     * with the default Locale
++     * @param bossbarKey the message key for the bossbar
++     */
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull Object @NotNull ... args);
++
++    /**
++     * Shows a translated bossbar to the user
++     * with the default Locale
++     * @param bossbarKey the message key for the bossbar
++     * @param bossBar the bossbar settings
++     */
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Object @NotNull ... args);
++
++    /**
++     * Shows a translated bossbar to the user
++     * with the default Locale
++     * @param bossbarKey the message key for the bossbar
++     * @param project the project
++     * @param bossBar the bossbar settings
++     */
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull String project, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Object @NotNull ... args);
++
++    /**
++     * Shows a translated bossbar to the user
++     * @param bossbarKey the message key for the bossbar
++     * @param project the project
++     * @param locale the locale
++     * @param bossBar the bossbar settings
++     * @see #showBossBar(net.kyori.adventure.bossbar.BossBar)
++     */
++    void showTranslatedBossbar(@NotNull String bossbarKey, @NotNull String project, @NotNull Locale locale, @NotNull net.kyori.adventure.bossbar.BossBar bossBar, @NotNull Object @NotNull ... args);
++
++    // Varilx - End
++
++
+     // Paper start
+     @Override
+     default net.kyori.adventure.identity.@NotNull Identity identity() {
+@@ -1164,7 +1278,7 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      */
+     @Deprecated
+     void sendSignChange(@NotNull Location loc, @Nullable java.util.List<? extends net.kyori.adventure.text.Component> lines, @NotNull DyeColor dyeColor, boolean hasGlowingText)
+-        throws IllegalArgumentException;
++            throws IllegalArgumentException;
+     // Paper end
+ 
+     /**
+@@ -2780,10 +2894,10 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      */
+     default void setResourcePack(final @NotNull UUID uuid, final @NotNull String url, final @NotNull String hash, final net.kyori.adventure.text.@Nullable Component resourcePackPrompt, final boolean required) {
+         this.sendResourcePacks(net.kyori.adventure.resource.ResourcePackRequest.resourcePackRequest()
+-            .required(required)
+-            .replace(true)
+-            .prompt(resourcePackPrompt)
+-            .packs(net.kyori.adventure.resource.ResourcePackInfo.resourcePackInfo(uuid, java.net.URI.create(url), hash))
++                .required(required)
++                .replace(true)
++                .prompt(resourcePackPrompt)
++                .packs(net.kyori.adventure.resource.ResourcePackInfo.resourcePackInfo(uuid, java.net.URI.create(url), hash))
+         );
+     }
+ 
+@@ -3851,7 +3965,7 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+      *
+      * @return an immutable set of chunks
+      * @apiNote currently marked as experimental to gather feedback regarding the returned set being an immutable copy
+-      * vs it potentially being an unmodifiable view of the set chunks.
++     * vs it potentially being an unmodifiable view of the set chunks.
+      */
+     @ApiStatus.Experimental
+     java.util.@NotNull @org.jetbrains.annotations.Unmodifiable Set<org.bukkit.Chunk> getSentChunks();
+@@ -4012,3 +4126,5 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+     }
+     // Purpur end
+ }
++
++
+diff --git a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
+index e8c0b8848abce2c9e8b2be880de3897292f0b23e..fdeef8da5db20d4072c143668544f52c276538a9 100644
+--- a/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
++++ b/src/main/java/org/bukkit/inventory/meta/ItemMeta.java
+@@ -5,6 +5,8 @@ import java.util.Collection;
+ import java.util.List;
+ import java.util.Map;
+ import java.util.Set;
++
++import de.varilx.core.common.translation.Locale;
+ import net.kyori.adventure.text.Component;
+ import org.bukkit.NamespacedKey;
+ import org.bukkit.Tag;
+@@ -39,6 +41,44 @@ import org.jetbrains.annotations.Nullable;
+  */
+ public interface ItemMeta extends Cloneable, ConfigurationSerializable, PersistentDataHolder {
+ 
++
++    // Varilx - Start
++
++    /**
++     * Set a custom name with translations
++     * @param messageKey the message key
++     * @param args the arguments
++     */
++    void customTranslationName(@NotNull String messageKey, @NotNull Object... args);
++
++    /**
++     * Sets the custom name with translation
++     * @param messageKey the message key
++     * @param project the project
++     * @param args the args
++     */
++    void customTranslationName(@NotNull String messageKey, @NotNull String project, @NotNull Locale locale, @NotNull Object @NotNull ... args);
++
++    /**
++     * Sets the translations lore
++     * @param loreKey the lore
++     * @param args the args
++     * @see #translationsLore(String, String, Locale, Object...)
++     */
++    void translationsLore(@NotNull String loreKey, @NotNull Object @NotNull ... args);
++
++    /**
++     * Sets the translations lore
++     * @param loreKey the lore
++     * @param project the project
++     * @param locale the locale
++     * @param args the args
++     */
++    void translationsLore(@NotNull String loreKey, @NotNull String project, @NotNull Locale locale, @NotNull Object @NotNull ... args);
++
++    // Varilx - End
++
++
+     // Paper start
+     /**
+      * Checks for existence of a custom name.
+@@ -1158,3 +1198,4 @@ public interface ItemMeta extends Cloneable, ConfigurationSerializable, Persiste
+     boolean hasDestroyableKeys();
+     // Paper end - Add an API for can-place-on/can-break adventure mode predicates
+ }
++
