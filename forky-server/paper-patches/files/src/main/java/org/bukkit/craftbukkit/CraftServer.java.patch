@@ -25,7 +25,7 @@
  import net.minecraft.advancements.AdvancementHolder;
  import net.minecraft.commands.CommandSourceStack;
  import net.minecraft.commands.Commands;
-@@ -319,6 +_,8 @@
+@@ -320,6 +_,8 @@
      private final io.papermc.paper.threadedregions.scheduler.FoliaAsyncScheduler asyncScheduler = new io.papermc.paper.threadedregions.scheduler.FoliaAsyncScheduler();
      private final io.papermc.paper.threadedregions.scheduler.FoliaGlobalRegionScheduler globalRegionScheduler = new io.papermc.paper.threadedregions.scheduler.FoliaGlobalRegionScheduler();
  
@@ -34,7 +34,7 @@
      @Override
      public final io.papermc.paper.threadedregions.scheduler.RegionScheduler getRegionScheduler() {
          return this.regionizedScheduler;
-@@ -396,6 +_,11 @@
+@@ -397,6 +_,11 @@
      }
      // Paper end - Folia reagion threading API
  
@@ -46,7 +46,7 @@
      static {
          ConfigurationSerialization.registerClass(CraftOfflinePlayer.class);
          ConfigurationSerialization.registerClass(CraftPlayerProfile.class);
-@@ -406,6 +_,8 @@
+@@ -407,6 +_,8 @@
  
      public CraftServer(DedicatedServer console, PlayerList playerList) {
          this.console = console;
@@ -55,7 +55,7 @@
          this.playerList = (DedicatedPlayerList) playerList;
          this.playerView = Collections.unmodifiableList(Lists.transform(playerList.players, new Function<ServerPlayer, CraftPlayer>() {
              @Override
-@@ -2154,6 +_,98 @@
+@@ -2155,6 +_,98 @@
          this.console.halt(false);
      }
  
@@ -154,7 +154,7 @@
      @Override
      @Deprecated // Paper
      public int broadcast(String message, String permission) {
-@@ -2544,6 +_,27 @@
+@@ -2545,6 +_,27 @@
          return CraftInventoryCreator.INSTANCE.createInventory(owner, size, title);
      }
  
@@ -182,7 +182,7 @@
      // Paper start
      @Override
      public Merchant createMerchant(net.kyori.adventure.text.Component title) {
-@@ -3385,5 +_,11 @@
+@@ -3391,5 +_,11 @@
      public boolean isLagging() {
          return getServer().lagging;
      }

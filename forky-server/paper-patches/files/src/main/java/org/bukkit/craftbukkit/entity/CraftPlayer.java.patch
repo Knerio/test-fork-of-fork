@@ -1,6 +1,6 @@
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -37,6 +_,9 @@
+@@ -38,6 +_,9 @@
  import java.util.logging.Logger;
  import java.util.stream.Collectors;
  import javax.annotation.Nullable;
@@ -10,7 +10,7 @@
  import net.minecraft.advancements.AdvancementProgress;
  import net.minecraft.core.BlockPos;
  import net.minecraft.core.Holder;
-@@ -196,6 +_,7 @@
+@@ -197,6 +_,7 @@
  import org.bukkit.profile.PlayerProfile;
  import org.bukkit.scoreboard.Scoreboard;
  import org.jetbrains.annotations.NotNull;
@@ -18,7 +18,7 @@
  
  import net.md_5.bungee.api.chat.BaseComponent; // Spigot
  
-@@ -219,6 +_,33 @@
+@@ -220,6 +_,33 @@
      private static final boolean DISABLE_CHANNEL_LIMIT = System.getProperty("paper.disableChannelLimit") != null; // Paper - add a flag to disable the channel limit
      private long lastSaveTime; // Paper - getLastPlayed replacement API
  
@@ -52,7 +52,7 @@
      public CraftPlayer(CraftServer server, ServerPlayer entity) {
          super(server, entity);
  
-@@ -3272,6 +_,47 @@
+@@ -3254,6 +_,47 @@
      // resetTitle implemented above
  
      private @Nullable Set<net.kyori.adventure.bossbar.BossBar> activeBossBars;
