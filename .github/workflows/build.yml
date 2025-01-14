@@ -1,0 +1,32 @@
+name: Patch and Build
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Git Repository
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+      - name: Configure Git User Details
+        run: git config --global user.email "actions@github.com" && git config --global user.name "Github Actions"
+      - name: Apply Patches
+        run: ./gradlew applyAllPatches --no-deamon --stacktrace
+        env:
+          VARILX_USER: ${{ secrets.VARILX_USER }}
+          VARILX_TOKEN: ${{ secrets.VARILX_TOKEN }}
+      - name: Build
+        run: ./gradlew build --no-deamon --stacktrace
+        env:
+          VARILX_USER: ${{ secrets.VARILX_USER }}
+          VARILX_TOKEN: ${{ secrets.VARILX_TOKEN }}
