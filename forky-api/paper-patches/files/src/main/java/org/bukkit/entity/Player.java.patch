@@ -1,5 +1,16 @@
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
+@@ -9,7 +_,10 @@
+ import java.util.Map;
+ import java.util.UUID;
+ import java.util.concurrent.CompletableFuture;
++
++import de.varilx.core.common.translation.Locale;
+ import io.papermc.paper.entity.LookAnchor;
++import net.kyori.adventure.title.Title;
+ import org.bukkit.BanEntry;
+ import org.bukkit.DyeColor;
+ import org.bukkit.Effect;
 @@ -38,6 +_,7 @@
  import org.bukkit.block.TileState;
  import org.bukkit.block.data.BlockData;
