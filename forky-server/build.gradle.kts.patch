@@ -1,6 +1,6 @@
 --- a/purpur-server/build.gradle.kts
 +++ b/purpur-server/build.gradle.kts
-@@ -21,6 +_,7 @@
+@@ -22,6 +_,7 @@
      // gitFilePatches = true
  
      val purpur = forks.register("purpur") {
@@ -8,38 +8,36 @@
          upstream.patchDir("paperServer") {
              upstreamPath = "paper-server"
              excludes = setOf("src/minecraft", "patches", "build.gradle.kts")
-@@ -29,7 +_,33 @@
+@@ -29,7 +_,31 @@
+             outputDir = rootDirectory.dir("paper-server")
          }
      }
- 
 -    activeFork = purpur
-+        activeFork = purpur
++             val forky = forks.register("forky") {
++                           forks = purpur
++                           upstream.patchRepo("paperServer") {
++                                       upstreamRepo = purpur.patchedRepo("paperServer")
++                                       patchesDir = rootDirectory.dir("forky-server/paper-patches")
++                                       outputDir = rootDirectory.dir("paper-server")
 +
-+         val forky = forks.register("forky") {
-+                 forks = purpur
-+                 upstream.patchRepo("paperServer") {
-+                         upstreamRepo = purpur.patchedRepo("paperServer")
-+                         patchesDir = rootDirectory.dir("forky-server/paper-patches")
-+                         outputDir = rootDirectory.dir("paper-server")
-+
-+                     }
-+                 upstream.patchDir("purpurServer") {
-+                         upstreamPath = "purpur-server"
-+                         excludes = setOf(
-+                                 "src/minecraft",
-+                                 "paper-patches",
-+                                 "minecraft-patches",
-+                                 "build.gradle.kts",
-+                                 "build.gradle.kts.patch"
-+                                     )
-+                         patchesDir = rootDirectory.dir("forky-server/purpur-patches")
-+                         outputDir = rootDirectory.dir("purpur-server")
-+                     }
-+             }
++                                   }
++                           upstream.patchDir("purpurServer") {
++                                       upstreamPath = "purpur-server"
++                                       excludes = setOf(
++                                                   "src/minecraft",
++                                                   "paper-patches",
++                                                   "minecraft-patches",
++                                                   "build.gradle.kts",
++                                                   "build.gradle.kts.patch"
++                                                               )
++                                       patchesDir = rootDirectory.dir("forky-server/purpur-patches")
++                                       outputDir = rootDirectory.dir("purpur-server")
++                                   }
++                       }
 +
 +
 +
-+         activeFork = forky
++               activeFork = forky
  
      paper {
          paperServerDir = upstreamsDirectory().map { it.dir("paper/paper-server") }
@@ -65,15 +63,15 @@
 +        resources { srcDir("../purpur-server/src/main/resources") }
      }
  }
- val log4jPlugins = sourceSets.create("log4jPlugins") {
+ 
 @@ -146,7 +_,9 @@
- // Paper end - configure mockito agent that is needed in newer java versions
+ }
  
  dependencies {
 -    implementation(project(":purpur-api"))
 +    // Varilx Start
 +    implementation(group = "de.varilx.coreapi", name = "common", version = "2.5.3-commit-83286e2", classifier = "shadow")
 +    // Varilx end
-     implementation("ca.spottedleaf:concurrentutil:0.0.2") // Paper - Add ConcurrentUtil dependency
-     // Paper start
+     implementation("ca.spottedleaf:concurrentutil:0.0.3")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
+     implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
