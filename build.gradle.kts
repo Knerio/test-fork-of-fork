@@ -9,7 +9,7 @@ plugins {
 paperweight {
     upstreams.register("purpur") {
         repo = github("PurpurMC", "Purpur")
-        ref = providers.gradleProperty("forkRef")
+        ref = providers.gradleProperty("purpurRef")
 
         patchFile {
             path = "purpur-server/build.gradle.kts"
