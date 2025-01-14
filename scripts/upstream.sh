@@ -46,13 +46,16 @@ if [ -n "$purpurHash" ]; then
     fi
 fi
 
+if [ -z "${updated}" ]; then
+  echo "No changes detected"
+  exit 1
+fi
 
 disclaimer="Upstream has released updates that appear to apply and compile correctly"
 log="Updated Upstream ($updated)\n\n${disclaimer}${logsuffix}"
 
 git add gradle.properties
 
-echo $logUpdated Upstream (Purpur)\n\nUpstream has released updates that appear to apply and compile correctly\n\Purpur Changes:\nPurpurMC/Purpur@233fcce Updated Upstream (Paper)
-echo -e "$log" | git commit -F -
+echo -e "git commit -m $log"
 
 ) || exit 1
