@@ -1,15 +1,6 @@
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -9,6 +_,8 @@
- import java.util.Map;
- import java.util.UUID;
- import java.util.concurrent.CompletableFuture;
-+import de.varilx.core.common.translation.Locale;
-+import net.kyori.adventure.title.Title;
- import org.bukkit.BanEntry;
- import org.bukkit.DyeColor;
- import org.bukkit.Effect;
-@@ -37,6 +_,7 @@
+@@ -38,6 +_,7 @@
  import org.bukkit.block.TileState;
  import org.bukkit.block.data.BlockData;
  import org.bukkit.block.sign.Side;
@@ -17,7 +8,7 @@
  import org.bukkit.conversations.Conversable;
  import org.bukkit.event.block.BlockBreakEvent;
  import org.bukkit.event.block.BlockDropItemEvent;
-@@ -60,6 +_,94 @@
+@@ -61,6 +_,94 @@
   */
  public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginMessageRecipient, net.kyori.adventure.identity.Identified, net.kyori.adventure.bossbar.BossBarViewer, com.destroystokyo.paper.network.NetworkClient { // Paper
  
@@ -112,18 +103,7 @@
      // Paper start
      @Override
      default net.kyori.adventure.identity.@NotNull Identity identity() {
-@@ -1309,8 +_,8 @@
-      * they have seen it before because this method was called.
-      * Note this method does not make the player invulnerable, which is normally expected when viewing credits.
-      *
--     * @see #hasSeenWinScreen() 
--     * @see #setHasSeenWinScreen(boolean) 
-+     * @see #hasSeenWinScreen()
-+     * @see #setHasSeenWinScreen(boolean)
-      * @see <a href="https://minecraft.wiki/wiki/End_Poem#Technical_details">https://minecraft.wiki/wiki/End_Poem#Technical_details</a>
-      */
-     public void showWinScreen();
-@@ -1519,6 +_,30 @@
+@@ -1520,6 +_,30 @@
  
          return banEntry;
      }
