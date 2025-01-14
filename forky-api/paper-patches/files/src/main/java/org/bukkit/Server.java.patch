@@ -1,16 +1,15 @@
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -14,6 +_,9 @@
- import java.util.UUID;
- import java.util.function.Consumer;
- import java.util.logging.Logger;
-+
+@@ -6,6 +_,8 @@
+ import java.io.Serializable;
+ import java.net.InetAddress;
+ import java.util.Collection;
 +import de.varilx.core.common.CommonAPI;
 +import de.varilx.core.common.translation.Locale;
- import org.bukkit.Warning.WarningState;
- import org.bukkit.advancement.Advancement;
- import org.bukkit.block.data.BlockData;
-@@ -69,6 +_,13 @@
+ import java.util.Collections;
+ import java.util.Iterator;
+ import java.util.List;
+@@ -73,6 +_,13 @@
  public interface Server extends PluginMessageRecipient, net.kyori.adventure.audience.ForwardingAudience { // Paper
  
      /**
@@ -24,7 +23,7 @@
       * Returns the de facto plugins directory, generally used for storing plugin jars to be loaded,
       * as well as their {@link org.bukkit.plugin.Plugin#getDataFolder() data folders}.
       *
-@@ -121,6 +_,7 @@
+@@ -125,6 +_,7 @@
      public String getBukkitVersion();
  
      // Paper start - expose game version
@@ -32,7 +31,7 @@
      /**
       * Gets the version of game this server implements
       *
-@@ -148,7 +_,7 @@
+@@ -152,7 +_,7 @@
       * affect the collection are fully supported. The effects following
       * (non-exhaustive) {@link Entity#teleport(Location) teleportation},
       * {@link Player#setHealth(double) death}, and {@link Player#kickPlayer(
@@ -41,7 +40,7 @@
       * asynchronous threads is unsafe.
       * <p>
       * For safe consequential iteration or mimicking the old array behavior,
-@@ -386,6 +_,7 @@
+@@ -390,6 +_,7 @@
      public int broadcastMessage(@NotNull String message);
  
      // Paper start
@@ -49,7 +48,7 @@
      /**
       * Sends the component to all online players.
       *
-@@ -636,6 +_,7 @@
+@@ -674,6 +_,7 @@
      public Player getPlayer(@NotNull UUID id);
  
      // Paper start
@@ -57,7 +56,7 @@
      /**
       * Gets the unique ID of the player currently known as the specified player name
       * In Offline Mode, will return an Offline UUID
-@@ -680,6 +_,7 @@
+@@ -718,6 +_,7 @@
      public List<World> getWorlds();
  
      // Paper start
@@ -65,7 +64,7 @@
      /**
       * Gets whether the worlds are being ticked right now.
       *
-@@ -750,6 +_,7 @@
+@@ -788,6 +_,7 @@
      public World getWorld(@NotNull UUID uid);
  
      // Paper start
@@ -73,7 +72,7 @@
      /**
       * Gets the world from the given NamespacedKey
       *
-@@ -843,6 +_,7 @@
+@@ -881,6 +_,7 @@
      @NotNull
      public ItemStack createExplorerMap(@NotNull World world, @NotNull Location location, @NotNull StructureType structureType, int radius, boolean findUnexplored);
      // Paper start
@@ -81,7 +80,7 @@
      /**
       * Create a new explorer map targeting the closest nearby structure of a
       * given {@link org.bukkit.generator.structure.StructureType}.
-@@ -894,6 +_,7 @@
+@@ -932,6 +_,7 @@
      public void reloadData();
  
      // Paper start - update reloadable data
@@ -89,7 +88,7 @@
      /**
       * Updates all advancement, tag, and recipe data to all connected clients.
       * Useful for updating clients to new advancements/recipes/tags.
-@@ -967,6 +_,7 @@
+@@ -1005,6 +_,7 @@
      public boolean addRecipe(@Nullable Recipe recipe);
  
      // Paper start - method to send recipes immediately
@@ -97,7 +96,7 @@
      /**
       * Adds a recipe to the crafting manager.
       *
-@@ -1147,6 +_,7 @@
+@@ -1185,6 +_,7 @@
      public boolean removeRecipe(@NotNull NamespacedKey key);
  
      // Paper start - method to resend recipes
@@ -105,7 +104,7 @@
      /**
       * Remove a recipe from the server.
       * <p>
-@@ -1256,6 +_,7 @@
+@@ -1294,6 +_,7 @@
      @Deprecated // Paper
      public int broadcast(@NotNull String message, @NotNull String permission);
      // Paper start
@@ -113,7 +112,7 @@
      /**
       * Broadcast a message to all players.
       * <p>
-@@ -1298,6 +_,7 @@
+@@ -1336,6 +_,7 @@
      public OfflinePlayer getOfflinePlayer(@NotNull String name);
  
      // Paper start
@@ -121,7 +120,7 @@
      /**
       * Gets the player by the given name, regardless if they are offline or
       * online.
-@@ -1340,7 +_,8 @@
+@@ -1378,7 +_,8 @@
       * @deprecated use {@link #createProfile(UUID, String)}
       */
      @NotNull
@@ -131,7 +130,7 @@
      PlayerProfile createPlayerProfile(@Nullable UUID uniqueId, @Nullable String name);
  
      /**
-@@ -1352,7 +_,8 @@
+@@ -1390,7 +_,8 @@
       * @deprecated use {@link #createProfile(UUID)}
       */
      @NotNull
@@ -141,7 +140,7 @@
      PlayerProfile createPlayerProfile(@NotNull UUID uniqueId);
  
      /**
-@@ -1365,7 +_,8 @@
+@@ -1403,7 +_,8 @@
       * @deprecated use {@link #createProfile(String)}
       */
      @NotNull
@@ -151,7 +150,7 @@
      PlayerProfile createPlayerProfile(@NotNull String name);
  
      /**
-@@ -1432,6 +_,7 @@
+@@ -1470,6 +_,7 @@
      public <T extends BanList<?>> T getBanList(@NotNull BanList.Type type);
  
      // Paper start - add BanListType (which has a generic)
@@ -159,7 +158,7 @@
      /**
       * Gets a ban list for the supplied type.
       *
-@@ -1477,6 +_,7 @@
+@@ -1515,6 +_,7 @@
      public ConsoleCommandSender getConsoleSender();
  
      // Paper start
@@ -167,7 +166,7 @@
      /**
       * Creates a special {@link CommandSender} which redirects command feedback (in the form of chat messages) to the
       * specified listener. The returned sender will have the same effective permissions as {@link #getConsoleSender()}.
-@@ -1547,6 +_,7 @@
+@@ -1584,6 +_,7 @@
      Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type);
  
      // Paper start
@@ -175,7 +174,7 @@
      /**
       * Creates an empty inventory with the specified type and title. If the type
       * is {@link InventoryType#CHEST}, the new inventory has a size of 27;
-@@ -1617,6 +_,7 @@
+@@ -1654,6 +_,7 @@
      Inventory createInventory(@Nullable InventoryHolder owner, int size) throws IllegalArgumentException;
  
      // Paper start
@@ -183,7 +182,7 @@
      /**
       * Creates an empty inventory of type {@link InventoryType#CHEST} with the
       * specified size and title.
-@@ -1648,7 +_,42 @@
+@@ -1685,7 +_,42 @@
      @NotNull
      Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull String title) throws IllegalArgumentException;
  
@@ -226,7 +225,7 @@
      /**
       * Creates an empty merchant.
       *
-@@ -1764,6 +_,7 @@
+@@ -1813,6 +_,7 @@
      boolean isPrimaryThread();
  
      // Paper start
@@ -234,7 +233,7 @@
      /**
       * Gets the message that is displayed on the server list.
       *
-@@ -1793,7 +_,8 @@
+@@ -1842,7 +_,8 @@
       * @deprecated in favour of {@link #motd()}
       */
      @NotNull
@@ -244,7 +243,7 @@
      String getMotd();
  
      /**
-@@ -1802,7 +_,8 @@
+@@ -1851,7 +_,8 @@
       * @param motd The message to be displayed
       * @deprecated in favour of {@link #motd(net.kyori.adventure.text.Component)}
       */
@@ -254,7 +253,7 @@
      void setMotd(@NotNull String motd);
  
      /**
-@@ -1821,7 +_,8 @@
+@@ -1870,7 +_,8 @@
       * @deprecated in favour of {@link #shutdownMessage()}
       */
      @Nullable
@@ -264,7 +263,7 @@
      String getShutdownMessage();
  
      /**
-@@ -2052,6 +_,7 @@
+@@ -2101,6 +_,7 @@
      Entity getEntity(@NotNull UUID uuid);
  
      // Paper start
@@ -272,7 +271,7 @@
      /**
       * Gets the current server TPS
       *
-@@ -2077,6 +_,7 @@
+@@ -2124,6 +_,7 @@
      // Paper end
  
      // Paper start
@@ -280,7 +279,7 @@
      /**
       * Gets the active {@link org.bukkit.command.CommandMap}
       *
-@@ -2244,7 +_,8 @@
+@@ -2291,7 +_,8 @@
       * with keys from {@link io.papermc.paper.registry.RegistryKey}
       */
      @Nullable
@@ -290,7 +289,7 @@
      <T extends Keyed> Registry<T> getRegistry(@NotNull Class<T> tClass);
  
      /**
-@@ -2255,6 +_,164 @@
+@@ -2302,6 +_,164 @@
      @NotNull
      UnsafeValues getUnsafe();
  
@@ -455,7 +454,7 @@
      // Spigot start
      public class Spigot {
  
-@@ -2265,20 +_,17 @@
+@@ -2312,20 +_,17 @@
  
          // Paper start
          @NotNull
@@ -487,7 +486,7 @@
              throw new UnsupportedOperationException("Not supported yet.");
          }
          // Paper end
-@@ -2334,6 +_,7 @@
+@@ -2381,6 +_,7 @@
      boolean reloadCommandAliases(); // Paper
  
      // Paper start - allow preventing player name suggestions by default
@@ -495,7 +494,7 @@
      /**
       * Checks if player names should be suggested when a command returns {@code null} as
       * their tab completion result.
-@@ -2471,6 +_,7 @@
+@@ -2518,6 +_,7 @@
      // Paper end
  
      // Paper start - Folia region threading API
@@ -503,7 +502,7 @@
      /**
       * Returns the Folia region task scheduler. The region task scheduler can be used to schedule
       * tasks by location to be executed on the region which owns the location.
-@@ -2605,6 +_,7 @@
+@@ -2652,6 +_,7 @@
      // Paper end - Folia region threading API
  
      // Paper start - API to check if the server is sleeping
