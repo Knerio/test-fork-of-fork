@@ -64,7 +64,7 @@
      }
  }
  
-@@ -146,7 +_,9 @@
+@@ -146,7 +_,10 @@
  }
  
  dependencies {
@@ -72,6 +72,7 @@
 +    // Varilx Start
 +    implementation(group = "de.varilx.coreapi", name = "common", version = "2.5.3-commit-83286e2", classifier = "shadow")
 +    // Varilx end
++    implementation(project(":forky-api"))
      implementation("ca.spottedleaf:concurrentutil:0.0.3")
      implementation("org.jline:jline-terminal-ffm:3.27.1") // use ffm on java 22+
      implementation("org.jline:jline-terminal-jni:3.27.1") // fall back to jni on java 21
